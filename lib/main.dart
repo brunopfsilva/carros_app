@@ -13,7 +13,9 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.deepPurple,
         brightness: Brightness.light
+
       ),
+
       home: loginPage(),
     );
   }

@@ -1,4 +1,10 @@
+import 'package:carros_app/widgets/AppText.dart';
+import 'package:carros_app/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:carros_app/utils/nav.dart';
+
+import 'home_page.dart';
+
 
 class loginPage extends StatefulWidget {
   @override
@@ -23,7 +29,7 @@ class _loginPageState extends State<loginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Carros"),
+        title: Text("Carros Login",),
         centerTitle: true,
       ),
       body: _body(),
@@ -37,19 +43,19 @@ class _loginPageState extends State<loginPage> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: <Widget>[
-            textFormFieldLogin("Login", "Digite o login",
+            AppText("Login", "Digite o login",
               controller: tlogin,
               validator: _validatorlogin,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,),
             SizedBox(height: 10.0),
-            textFormFieldLogin("Senha", "Digite sua senha",
+            AppText("Senha", "Digite sua senha",
               password: true,
               controller: tsenha,
               validator: _validatorSenha,
               keyboardType: TextInputType.number,focusNode: _focusSenha,),
             SizedBox(height: 20.0),
-            button("Login", _onClickLogin),
+            AppButton("Login", onPressed: _onClickLogin),
             SizedBox(height: 18.0),
             Center(
                 child: Text(
@@ -62,48 +68,6 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
-  Container button(String text, Function onpressed) {
-    return Container(
-      height: 45.0,
-      child: RaisedButton(
-        color: Colors.deepPurpleAccent,
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        onPressed: onpressed,
-      ),
-    );
-  }
-
-  TextFormField textFormFieldLogin(
-      String label,
-      String hint, {
-        bool password = false,
-        TextEditingController controller,
-        FormFieldValidator<String> validator,
-        TextInputType keyboardType,
-        TextInputAction textInputAction,
-        FocusNode focusNode,
-
-      }) {
-    return TextFormField(
-      controller: controller,
-      obscureText: password,
-      validator: validator,
-      keyboardType: keyboardType,
-      textInputAction: TextInputAction.next,
-      focusNode: focusNode,
-      onFieldSubmitted: (String text){
-        FocusScope.of(context).requestFocus(_focusSenha);
-      },
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-      ),
-      style: TextStyle(fontSize: 15, color: Colors.deepPurpleAccent),
-    );
-  }
 
   _onClickLogin() {
     bool formOk = _formkey.currentState.validate();
@@ -115,6 +79,9 @@ class _loginPageState extends State<loginPage> {
 
     String login = tlogin.text;
     String senha = tsenha.text;
+
+    push(context,homePage());
+
   }
 
   String _validatorlogin(String text) {
