@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
 
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark
+        primarySwatch: Colors.deepPurple,
+        brightness: Brightness.light
       ),
       home: loginPage(),
     );
