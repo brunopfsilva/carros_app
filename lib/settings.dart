@@ -2,13 +2,21 @@ library settings;
 
 
 
-export 'pages/api_response.dart';
+export 'package:carros_app/utils/api_response.dart';
 export 'dart:convert';
-export 'pages/Usuario.dart';
+export 'package:carros_app/login/Usuario.dart';
 export 'utils/nav.dart';
 export 'utils/alert.dart';
+export 'package:carros_app/widgets/drawer_menu.dart';
 
-export 'package:carros_app/pages/login_api_user.dart';
+//pages
+export 'package:carros_app/carro/Carro.dart';
+export 'package:carros_app/pages/login_page.dart';
+
+
+export 'package:carros_app/carro/carroApi.dart';
+
+export 'package:carros_app/login/login_api_user.dart';
 export 'package:carros_app/widgets/AppText.dart';
 export 'package:carros_app/widgets/app_button.dart';
 export 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:carros_app/settings.dart';
 
-import 'Usuario.dart';
-import 'home_page.dart';
+import 'package:carros_app/login/Usuario.dart';
+import 'package:carros_app/pages/home_page.dart';
 
 
 class loginPage extends StatefulWidget {
