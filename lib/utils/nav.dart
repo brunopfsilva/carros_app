@@ -7,3 +7,10 @@ Future push (BuildContext context, Widget page){
 
 
 }
+
+Future replace (BuildContext context, Widget page){
+
+  return Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page ));
+
+
+}

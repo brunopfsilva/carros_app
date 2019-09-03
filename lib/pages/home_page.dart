@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
-
+import 'package:carros_app/settings.dart';
 
 class homePage extends StatelessWidget {
+
+  Usuario user;
+
+  homePage(this.user);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,17 +14,17 @@ class homePage extends StatelessWidget {
           title: Text("Carros"),
           centerTitle: true,
         ),
-      body: _body(),
+      body: _body(user),
       ),
 
     );
   }
 }
 
-_body() {
+_body(user) {
 
   return Center(
-    child: Text("Bruno",style: TextStyle(fontSize: 22),),
+    child: Text("${user.nome}" + " \n${user.email}",style: TextStyle(fontSize: 22),),
   );
 
 }

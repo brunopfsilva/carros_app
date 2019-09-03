@@ -1,8 +1,6 @@
-import 'package:carros_app/widgets/AppText.dart';
-import 'package:carros_app/widgets/app_button.dart';
-import 'package:flutter/material.dart';
-import 'package:carros_app/utils/nav.dart';
+import 'package:carros_app/settings.dart';
 
+import 'Usuario.dart';
 import 'home_page.dart';
 
 
@@ -12,13 +10,18 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
-  final tlogin = TextEditingController(text: "Bruno");
+
+  final tlogin = TextEditingController(text: "user");
 
   final tsenha = TextEditingController(text: "123");
 
   final _formkey = GlobalKey<FormState>();
 
   final _focusSenha = FocusNode();
+
+  bool _showProgress = false;
+
+
 
   @override
   void initState() {
@@ -38,6 +41,7 @@ class _loginPageState extends State<loginPage> {
 
   _body() {
     return Form(
+
       key: _formkey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,13 +59,31 @@ class _loginPageState extends State<loginPage> {
               validator: _validatorSenha,
               keyboardType: TextInputType.number,focusNode: _focusSenha,),
             SizedBox(height: 20.0),
-            AppButton("Login", onPressed: _onClickLogin),
+
+            AppButton("Login", onPressed: _onClickLogin,showProgress: _showProgress),
+
             SizedBox(height: 18.0),
-            Center(
-                child: Text(
-                  "Criar conta",
-                  style: TextStyle(fontSize: 18, color: Colors.deepPurpleAccent),
-                )),
+            GestureDetector(
+
+              child: Center(
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+
+                      "Criar conta",
+                      style: TextStyle(fontSize: 18, color: Colors.deepPurpleAccent),
+                    ),
+                  ),
+
+              ),
+              onTap: (){
+                setState(() {
+                  print("Criar conta");
+                });
+
+              },
+            ),
           ],
         ),
       ),
@@ -69,7 +91,7 @@ class _loginPageState extends State<loginPage> {
   }
 
 
-  _onClickLogin() {
+  _onClickLogin() async {
     bool formOk = _formkey.currentState.validate();
 
     //se o formulario nao for valido nao deixa segui em frente
@@ -80,7 +102,27 @@ class _loginPageState extends State<loginPage> {
     String login = tlogin.text;
     String senha = tsenha.text;
 
-    push(context,homePage());
+
+    setState(() {
+      _showProgress =true;
+    });
+
+    apiResponse response = await LoginApiUser.login(login, senha);
+
+
+    if(response.ok) {
+
+      Usuario usuario = response.result;
+
+      replace(context, homePage(usuario));
+    }else {
+      alert(context,response.msg.toString(),"error");
+
+    }
+
+    setState(() {
+      _showProgress =false;
+    });
 
   }
 
