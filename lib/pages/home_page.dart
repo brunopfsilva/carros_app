@@ -1,54 +1,40 @@
 import 'package:carros_app/settings.dart';
 
-class homePage extends StatelessWidget {
-
+class homePage extends StatefulWidget {
   Usuario user;
-
   homePage(this.user);
 
   @override
+  _homePageState createState() => _homePageState();
+}
+
+class _homePageState extends State<homePage> with SingleTickerProviderStateMixin<homePage>{
+  @override
   Widget build(BuildContext context) {
     return Container(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Carros"),
-          centerTitle: true,
+      child: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Carros"),
+            centerTitle: true,
+            bottom: TabBar(tabs: [
+             Tab(text: "Classicos",),
+              Tab(text: "Esportivos",),
+              Tab(text: "Luxo",),
+            ]),
+          ),
+          body: TabBarView(children: [
+            carroList(carroTipo.classicos),
+            carroList(carroTipo.esportivos),
+            carroList(carroTipo.luxo)
+          ]),
+          drawer: Container(
+              width: MediaQuery.of(context).size.width / 1.26, child: myDrawer()),
         ),
-      body: _body(user),
-      drawer: Container(width: MediaQuery.of(context).size.width/1.26,child: myDrawer()),
-
       ),
-
     );
   }
 }
 
-_body(user) {
 
-  List<Carro> carros = CarrosApi.getCarros();
-
-  return ListView.builder(
-      itemCount: carros.length,
-      itemBuilder: (context,index){
-
-        Carro c = carros[index];
-
-        return Row(children: <Widget>[
-          Image.network(c.urlFoto,scale: 3.6),
-          //faz o widget texto caber na tela
-          Flexible(child: Text(c.nome,style: TextStyle(fontSize: 21),
-          overflow: TextOverflow.ellipsis,)),
-
-        ],);
-
-        /*return ListTile(
-          title: Text(c.nome,style: TextStyle(fontSize: 21),),
-          leading: Image.network(c.urlFoto,scale: 1.0,),
-        
-        );*/
-        
-
-
-
-  });
-}

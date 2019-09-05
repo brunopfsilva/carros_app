@@ -7,7 +7,10 @@ export 'dart:convert';
 export 'package:carros_app/login/Usuario.dart';
 export 'utils/nav.dart';
 export 'utils/alert.dart';
+
+//widgets
 export 'package:carros_app/widgets/drawer_menu.dart';
+export 'package:carros_app/widgets/carrosList.dart';
 
 //pages
 export 'package:carros_app/carro/Carro.dart';

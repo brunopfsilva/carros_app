@@ -43,6 +43,8 @@ class _loginPageState extends State<loginPage> {
     return Form(
 
       key: _formkey,
+
+
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
@@ -60,7 +62,14 @@ class _loginPageState extends State<loginPage> {
               keyboardType: TextInputType.number,focusNode: _focusSenha,),
             SizedBox(height: 20.0),
 
-            AppButton("Login", onPressed: _onClickLogin,showProgress: _showProgress),
+            AppButton("Login", onPressed: _onClickLogin,showProgress: _showProgress,
+
+
+
+            ),
+
+
+
 
             SizedBox(height: 18.0),
             GestureDetector(
@@ -105,6 +114,7 @@ class _loginPageState extends State<loginPage> {
 
     setState(() {
       _showProgress =true;
+
     });
 
     apiResponse response = await LoginApiUser.login(login, senha);
