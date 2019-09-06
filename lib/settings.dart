@@ -24,3 +24,5 @@ export 'package:carros_app/widgets/AppText.dart';
 export 'package:carros_app/widgets/app_button.dart';
 export 'package:flutter/material.dart';
 export 'package:carros_app/utils/nav.dart';
+export 'package:shared_preferences/shared_preferences.dart';
+export 'utils/prefs.dart';
