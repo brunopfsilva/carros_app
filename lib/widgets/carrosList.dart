@@ -21,7 +21,7 @@ class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixi
   final _streamController = StreamController<List<Carro>>();
 
   @override
-  // mantem a aba salva
+  // mantem a aba salva.
   bool get wantKeepAlive => true;
 
 
