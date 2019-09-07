@@ -11,9 +11,9 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
 
-  final tlogin = TextEditingController(text: "user");
+  final tlogin = TextEditingController();
 
-  final tsenha = TextEditingController(text: "123");
+  final tsenha = TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
 
@@ -26,6 +26,26 @@ class _loginPageState extends State<loginPage> {
   @override
   void initState() {
     super.initState();
+
+
+    Future<Usuario> future = Usuario.get();
+    //este future aguarda o objecto Usuario como resultado
+    future.then((Usuario user){
+
+      //mantem o usuario logado
+      if(user != null){
+        replace(context, homePage(user));
+      }
+
+    /*  setState(() {
+        tlogin.text = user.login;
+      });
+
+*/
+
+    });
+
+
   }
 
   @override
@@ -101,6 +121,7 @@ class _loginPageState extends State<loginPage> {
 
 
   _onClickLogin() async {
+
     bool formOk = _formkey.currentState.validate();
 
     //se o formulario nao for valido nao deixa segui em frente
@@ -123,6 +144,7 @@ class _loginPageState extends State<loginPage> {
     if(response.ok) {
 
       Usuario usuario = response.result;
+
 
       replace(context, homePage(usuario));
     }else {

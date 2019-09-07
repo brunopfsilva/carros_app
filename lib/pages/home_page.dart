@@ -15,13 +15,28 @@ class _homePageState extends State<homePage> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    
-    
+
     _tabController = TabController(length: 3, vsync: this);
 
 
-    Prefs.setInt("tabIdex",_tabController.index);
+    Future<int> future = Prefs.getInt("tabIdex");
+
+    //futuro a espera de valor inteiro o mesmo adicionado abaixo e que foi pedido acima
+    future.then((int index){
+
+      setState(() {
+        _tabController.index = index;
+      });
+
+    });
+
+    _tabController.addListener((){
+      Prefs.setInt("tabIdex",_tabController.index);
+    });
     
+
+
+
   }
 
   @override

@@ -12,12 +12,24 @@ class carroTipo {
 class CarrosApi {
   static Future<List<Carro>> getCarros(String tipo) async{
 
+
+    Usuario usuario = await Usuario.get();
+
+    Map<String,String> hearder = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer ${usuario.token}"
+    };
+
+    print(hearder);
+
+
+    
     try{
-      var url = 'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo';
+      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo';
 
       print("GET > $url");
 
-      var response = await http.get(url);
+      var response = await http.get(url,headers: hearder);
 
       //quando o json vem entre [] converter sempre para lista
       List list = json.decode(response.body);
@@ -35,7 +47,8 @@ class CarrosApi {
     }catch(error){
 
       print(error);
-
+      //para a execucao do codigo ao jogar o error
+      throw error;
     }
 
   }

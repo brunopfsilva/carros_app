@@ -19,7 +19,7 @@ class Carro {
         this.latitude,
         this.longitude});
 
-  //faz o parse do objecto para o json
+  //faz o parse do objecto para o json ou seja usando para leitura de dados
   Carro.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
@@ -32,6 +32,7 @@ class Carro {
   }
 
   //gera o map com o objecto para pode salvar o objecto no servidor
+  //salva no banco de dados convertendo ele para um map para salvar no banco de dados ou nas preferencias
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;

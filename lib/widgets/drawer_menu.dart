@@ -1,20 +1,28 @@
 import 'package:carros_app/settings.dart';
 
 
+
 class myDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    Future<Usuario> user = Usuario.get();
+
+
     return SafeArea(
       child: Drawer(
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("Bruno Silva"),
-              accountEmail: Text("bruno.pfsilva1985@gmail.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(""),
-              ),
+            FutureBuilder<Usuario>(
+              future: user , builder: (context, snapshot){
+
+                Usuario user = snapshot.data;
+
+                return user != null ? _hearder(user) : Container(child: CircularProgressIndicator());
+
+            },
             ),
+
             ListTile(
               title: Text("Logout"),
               subtitle: Text("Sair do app"),
@@ -26,11 +34,22 @@ class myDrawer extends StatelessWidget {
       ),
     );
   }
+
+  UserAccountsDrawerHeader _hearder(Usuario user) {
+    return UserAccountsDrawerHeader(
+            accountName: Text(user.nome),
+            accountEmail: Text(user.email),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: NetworkImage(user.urlFoto),
+            ),
+          );
+  }
 }
 
 _onClickLogout(context) {
 
   Navigator.of(context).pop();
   replace(context, loginPage());
+  Usuario.clear();
 
 }

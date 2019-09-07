@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:carros_app/carro/carro_page.dart';
 import 'package:carros_app/settings.dart';
 
 
@@ -13,37 +16,113 @@ class carroList extends StatefulWidget {
 
 class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixin<carroList>{
 
+  List<Carro>carros;
+  //lembrar de tipa o stream com os dados que precisa fazer o tratamento
+  final _streamController = StreamController<List<Carro>>();
+
   @override
   // mantem a aba salva
   bool get wantKeepAlive => true;
 
+
+  @override
+  void initState() {
+    super.initState();
+
+  /*  1 maneira de pegar os dados com call back
+
+  Future<List<Carro>> carros_future = CarrosApi.getCarros(widget.tipo);
+
+    //call back future carros aguardando list que chega da api
+    carros_future.then((List<Carro>carros){
+
+      setState(() {
+        //este carro declarado acima é igual ao carro vindo do future
+        this.carros = carros;
+      });
+
+    });
+*/
+
+    _loadData();
+
+  }
+
+
+
+  _loadData() async {
+    //pegar os dados com stream
+    List<Carro>carros = await CarrosApi.getCarros(widget.tipo);
+
+    //joga os dados na stream
+    _streamController.sink.add(carros);
+  }
+
+
+  @override
+  void dispose() {
+
+    //fecha a stream para liberar recursos
+    _streamController.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
     super.build(context);
-    return _body();
-  }
 
-  _body() {
-    Future<List<Carro>> carros_future = CarrosApi.getCarros(widget.tipo);
+    return StreamBuilder<List<Carro>>(
+      //saida de dados da stream
+        stream: _streamController.stream,
+        initialData: null,
+        builder: (context,snapshot) {
 
-    return FutureBuilder(
-      future: carros_future, builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.hasError){
+            return Center(
+              child: Text(
+                  "Nao foi possivel buscar os dados",
+                style: TextStyle(
+                  color: Colors.deepPurpleAccent,
+                  fontSize: 21,),
+              ),
+            );
+            
+            
+            
+            
+          }
 
-      if(snapshot.hasError){
+          if(!snapshot.hasData){
+            return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
+          }
 
-        return Center(child: Text("Não foi possivel buscar os dados",style: TextStyle(fontSize: 22.0),),);
-      }
 
-      if(!snapshot.hasData){
-        return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
-      }
+          List<Carro> carros = snapshot.data;
 
-      List<Carro> carros = snapshot.data;
+
+          return ListaCarros(carros);
+
+
+        }
+
+
+
+      );
+
+    
+
+   /* if(carros == null){
+      return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
+    }
       return ListaCarros(carros);
-    },
+*/
 
-    );
+
   }
+
+
 Container ListaCarros(List<Carro> carros) {
     return Container(
       child: ListView.builder(
@@ -74,8 +153,8 @@ Container ListaCarros(List<Carro> carros) {
                         children: <Widget>[
                           FlatButton(
                             child: const Text('Detalhes'),
-                            onPressed: () { /* ... */ },
-                          ),
+                            onPressed: () => _clickCarro(c),
+                            ),
                           FlatButton(
                             child: const Text('Compartilhar'),
                             onPressed: () { /* ... */ },
@@ -97,4 +176,12 @@ Container ListaCarros(List<Carro> carros) {
         );*/
           }),
     );
-  }}
+  }
+
+  _clickCarro(Carro c) {
+
+    push(context, CarroPage(c));
+
+  }
+
+}
