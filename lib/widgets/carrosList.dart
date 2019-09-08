@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:carros_app/carro/carro_page.dart';
+import 'package:carros_app/carro/carros_bloc.dart';
 import 'package:carros_app/settings.dart';
+import 'package:carros_app/utils/test_error.dart';
 
 
 class carroList extends StatefulWidget {
@@ -12,13 +14,24 @@ class carroList extends StatefulWidget {
 
   @override
   _carroListState createState() => _carroListState();
+
+
+
 }
 
 class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixin<carroList>{
 
+
+
+
   List<Carro>carros;
   //lembrar de tipa o stream com os dados que precisa fazer o tratamento
-  final _streamController = StreamController<List<Carro>>();
+
+
+  String get tipo => widget.tipo;
+
+  //chama o bloc
+  final _bloc = carrosBloc();
 
   @override
   // mantem a aba salva.
@@ -44,26 +57,21 @@ class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixi
     });
 */
 
-    _loadData();
+
+    _bloc.loadData(tipo);
 
   }
 
 
 
-  _loadData() async {
-    //pegar os dados com stream
-    List<Carro>carros = await CarrosApi.getCarros(widget.tipo);
 
-    //joga os dados na stream
-    _streamController.sink.add(carros);
-  }
 
 
   @override
   void dispose() {
 
     //fecha a stream para liberar recursos
-    _streamController.close();
+    _bloc.dispose();
     super.dispose();
   }
 
@@ -75,23 +83,12 @@ class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixi
 
     return StreamBuilder<List<Carro>>(
       //saida de dados da stream
-        stream: _streamController.stream,
+        stream: _bloc.stream,
         initialData: null,
         builder: (context,snapshot) {
 
           if(snapshot.hasError){
-            return Center(
-              child: Text(
-                  "Nao foi possivel buscar os dados",
-                style: TextStyle(
-                  color: Colors.deepPurpleAccent,
-                  fontSize: 21,),
-              ),
-            );
-            
-            
-            
-            
+            TextError("Nao foi possivel buscar dados");
           }
 
           if(!snapshot.hasData){
