@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:carros_app/carro/carro_page.dart';
+import 'package:carros_app/pages/carro_page.dart';
 import 'package:carros_app/carro/carros_bloc.dart';
 import 'package:carros_app/settings.dart';
 import 'package:carros_app/utils/test_error.dart';
@@ -19,12 +19,11 @@ class carroList extends StatefulWidget {
 
 }
 
-class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixin<carroList>{
-
-
+class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixin<carroList> {
 
 
   List<Carro>carros;
+
   //lembrar de tipa o stream com os dados que precisa fazer o tratamento
 
 
@@ -42,7 +41,7 @@ class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixi
   void initState() {
     super.initState();
 
-  /*  1 maneira de pegar os dados com call back
+    /*  1 maneira de pegar os dados com call back
 
   Future<List<Carro>> carros_future = CarrosApi.getCarros(widget.tipo);
 
@@ -59,17 +58,11 @@ class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixi
 
 
     _bloc.loadData(tipo);
-
   }
-
-
-
-
 
 
   @override
   void dispose() {
-
     //fecha a stream para liberar recursos
     _bloc.dispose();
     super.dispose();
@@ -77,40 +70,36 @@ class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixi
 
   @override
   Widget build(BuildContext context) {
-
-
     super.build(context);
 
     return StreamBuilder<List<Carro>>(
       //saida de dados da stream
         stream: _bloc.stream,
         initialData: null,
-        builder: (context,snapshot) {
-
-          if(snapshot.hasError){
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
             TextError("Nao foi possivel buscar dados");
           }
 
-          if(!snapshot.hasData){
-            return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
           }
 
 
           List<Carro> carros = snapshot.data;
 
 
-          return ListaCarros(carros);
-
-
+          return RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: ListaCarros(carros));
         }
 
 
+    );
 
-      );
 
-    
-
-   /* if(carros == null){
+    /* if(carros == null){
       return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
     }
       return ListaCarros(carros);
@@ -120,7 +109,7 @@ class _carroListState extends State<carroList> with AutomaticKeepAliveClientMixi
   }
 
 
-Container ListaCarros(List<Carro> carros) {
+  Container ListaCarros(List<Carro> carros) {
     return Container(
       child: ListView.builder(
           padding: EdgeInsets.all(3.0),
@@ -134,27 +123,32 @@ Container ListaCarros(List<Carro> carros) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Center(child: Image.network(c.urlFoto ?? "https://carros-springboot.herokuapp.com/api/v1/carros/tipo/esportivos/Ferrari_FF.png", scale: 1.8)),
+                    Center(child: Image.network(c.urlFoto ??
+                        "https://carros-springboot.herokuapp.com/api/v1/carros/tipo/esportivos/Ferrari_FF.png",
+                        scale: 1.8)),
                     //faz o widget texto caber na tela
-                    SizedBox(height:9.0),
+                    SizedBox(height: 9.0),
                     Text(
                       c.nome,
                       style: TextStyle(fontSize: 21),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height:6.3),
+                    SizedBox(height: 6.3),
                     Text("Descricao.."),
 
-                    ButtonTheme.bar( // make buttons use the appropriate styles for cards
+                    ButtonTheme
+                        .bar( // make buttons use the appropriate styles for cards
                       child: ButtonBar(
                         children: <Widget>[
                           FlatButton(
                             child: const Text('Detalhes'),
                             onPressed: () => _clickCarro(c),
-                            ),
+                          ),
                           FlatButton(
                             child: const Text('Compartilhar'),
-                            onPressed: () { /* ... */ },
+                            onPressed: () {
+                              /* ... */
+                            },
                           ),
                         ],
                       ),
@@ -176,9 +170,14 @@ Container ListaCarros(List<Carro> carros) {
   }
 
   _clickCarro(Carro c) {
-
     push(context, CarroPage(c));
+  }
 
+
+  Future<void> _onRefresh() {
+    return Future.delayed(Duration(seconds: 3), () {
+      _bloc.loadData(tipo);
+    });
   }
 
 }

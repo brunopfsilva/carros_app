@@ -17,13 +17,15 @@ class carrosBloc {
   //expoe a stream para o widget ficar ouvindo
   Stream <List<Carro>> get stream => _streamController.stream;
 
-  loadData(String tipo) async {
+  Future<List<Carro>>loadData(String tipo) async {
     //pegar os dados com stream
     try {
       List<Carro>carros = await CarrosApi.getCarros(tipo);
       
       //joga os dados na stream
       _streamController.sink.add(carros);
+
+      return carros;
     } on Exception catch (e) {
       _streamController.sink.addError(e);
     }
