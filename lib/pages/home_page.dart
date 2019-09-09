@@ -1,4 +1,5 @@
 import 'package:carros_app/settings.dart';
+import 'package:carros_app/widgets/carrosPage.dart';
 
 class homePage extends StatefulWidget {
   Usuario user;
@@ -58,9 +59,9 @@ class _homePageState extends State<homePage> with SingleTickerProviderStateMixin
         body: TabBarView(
             controller: _tabController,
             children: [
-          carroList(carroTipo.classicos),
-          carroList(carroTipo.esportivos),
-          carroList(carroTipo.luxo)
+              carrosPage(carroTipo.classicos),
+              carrosPage(carroTipo.esportivos),
+              carrosPage(carroTipo.luxo)
         ]),
         drawer: Container(
             width: MediaQuery.of(context).size.width / 1.26, child: myDrawer()),
