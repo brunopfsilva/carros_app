@@ -5,16 +5,14 @@ import 'package:carros_app/favoritos/favorito_service.dart';
 import 'package:flutter/material.dart';
 import 'package:carros_app/carro/Carro.dart';
 
-class CarroPage extends StatefulWidget {
-  Carro carro;
+class favoritosPage extends StatefulWidget {
 
-  CarroPage(this.carro);
 
   @override
-  _CarroPageState createState() => _CarroPageState();
+  _favoritosPageState createState() => _favoritosPageState();
 }
 
-class _CarroPageState extends State<CarroPage> {
+class _favoritosPageState extends State<favoritosPage> {
   final _loren = loreBloc();
 
   @override

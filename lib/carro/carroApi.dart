@@ -1,3 +1,4 @@
+import 'package:carros_app/carro/carro-dao.dart';
 import 'package:carros_app/settings.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,6 +42,8 @@ class CarrosApi {
         Carro c = Carro.fromJson(map);
         carros.add(c);
       }
+
+
 
       return carros;
 

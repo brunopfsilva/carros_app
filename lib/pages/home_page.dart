@@ -1,3 +1,4 @@
+import 'package:carros_app/pages/favoritos_page.dart';
 import 'package:carros_app/settings.dart';
 import 'package:carros_app/widgets/carrosPage.dart';
 
@@ -17,7 +18,7 @@ class _homePageState extends State<homePage> with SingleTickerProviderStateMixin
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
 
 
     Future<int> future = Prefs.getInt("tabIdex");
@@ -51,9 +52,18 @@ class _homePageState extends State<homePage> with SingleTickerProviderStateMixin
               controller: _tabController,
               tabs: [
 
-           Tab(text: "Classicos",),
-            Tab(text: "Esportivos",),
-            Tab(text: "Luxo",),
+           Tab(text: "Classicos",
+           icon: Icon(Icons.directions_car),
+           ),
+            Tab(text: "Esportivos",
+              icon: Icon(Icons.directions_car),
+            ),
+            Tab(text: "Luxo",
+              icon: Icon(Icons.directions_car),
+            ),
+            Tab(text: "Favoritos",
+              icon: Icon(Icons.favorite),
+            ),
           ]),
         ),
         body: TabBarView(
@@ -61,7 +71,8 @@ class _homePageState extends State<homePage> with SingleTickerProviderStateMixin
             children: [
               carrosPage(carroTipo.classicos),
               carrosPage(carroTipo.esportivos),
-              carrosPage(carroTipo.luxo)
+              carrosPage(carroTipo.luxo),
+              favoritosPage()
         ]),
         drawer: Container(
             width: MediaQuery.of(context).size.width / 1.26, child: myDrawer()),

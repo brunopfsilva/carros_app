@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:carros_app/carro/Carro.dart';
-import 'package:carros_app/favoritos/db-helper.dart';
+import 'package:carros_app/utils/db-helper.dart';
 import 'package:sqflite/sqflite.dart';
 
 // Data Access Object
@@ -12,6 +12,7 @@ class CarroDAO {
   Future<int> save(Carro carro) async {
     var dbClient = await db;
     var id = await dbClient.insert("carro", carro.toJson(),
+        //da update nos registos ja existentes evitando conflitos
         conflictAlgorithm: ConflictAlgorithm.replace);
     print('id: $id');
     return id;
