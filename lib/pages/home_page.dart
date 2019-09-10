@@ -72,7 +72,7 @@ class _homePageState extends State<homePage> with SingleTickerProviderStateMixin
               carrosPage(carroTipo.classicos),
               carrosPage(carroTipo.esportivos),
               carrosPage(carroTipo.luxo),
-              favoritosPage()
+              FavoritosPage()
         ]),
         drawer: Container(
             width: MediaQuery.of(context).size.width / 1.26, child: myDrawer()),

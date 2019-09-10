@@ -1,185 +1,42 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carros_app/carro/lore_bloc.dart';
-import 'package:carros_app/carro/loripsum_api.dart';
-import 'package:carros_app/favoritos/favorito_service.dart';
 import 'package:flutter/material.dart';
-import 'package:carros_app/carro/Carro.dart';
-
-class favoritosPage extends StatefulWidget {
+import 'package:carros_app/carro/carros_bloc.dart';
 
 
+class FavoritosPage extends StatefulWidget {
   @override
-  _favoritosPageState createState() => _favoritosPageState();
+  _FavoritosPageState createState() => _FavoritosPageState();
 }
 
-class _favoritosPageState extends State<favoritosPage> {
-  final _loren = loreBloc();
+class _FavoritosPageState extends State<FavoritosPage> with AutomaticKeepAliveClientMixin<FavoritosPage>{
+
+
+  final _bloc = carrosBloc();
 
   @override
   void initState() {
     super.initState();
-    _loren.lorem();
+
+    _bloc.loadData();
+
 
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _loren.dispose();
-  }
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.carro.nome),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.place),
-            onPressed: _onClickmap,
-          ),
-          IconButton(
-            icon: Icon(Icons.videocam),
-            onPressed: _onClickvideo,
-          ),
-          PopupMenuButton<String>(
-            onSelected: (String value) => _onClickMenu(value),
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: "Editar",
-                  child: Text("Editar"),
-                ),
-                PopupMenuItem(
-                  value: "Deletar",
-                  child: Text("Deletar"),
-                ),
-                PopupMenuItem(
-                  value: "Share",
-                  child: Text("Share"),
-                ),
-              ];
-            },
-          ),
-        ],
-      ),
-      body: _body(),
-    );
-  }
+    return StreamBuilder(
+      stream: _bloc.stream,
+      builder: (context, snapshot) {
 
-  _body() {
-    return Container(
-        padding: EdgeInsets.all(16.0),
-        child: ListView(children: <Widget>[
+        if(snapshot.hasError){
 
-          CachedNetworkImage(
-            imageUrl: widget.carro.urlFoto,
-            placeholder: (context, url) =>
-            Center(child: new CircularProgressIndicator()),
-            errorWidget: (context, url, error) =>
-            new Icon(Icons.error),
-          ),
+        }
 
-          SizedBox(
-            height: 9,
-          ),
-          bloco1(),
-          Divider(),
-          bloco2(),
-        ]));
-  }
-
-  Row bloco1() {
-    return Row(
-          //da espaco entre os widgets
-         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  widget.carro.nome,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  widget.carro.tipo,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey),
-                ),
-              ],
-            ),
-            Spacer(),
-            Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.favorite,
-                    color: Colors.redAccent,
-                    size: 33,
-                  ),
-                  onPressed: _onClickFavorito,
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.share,
-                    color: Colors.blueGrey,
-                    size: 33,
-                  ),
-                  onPressed: _onClickFavorito,
-                ),
-              ],
-            ),
-          ],
-        );
-  }
-
-  void _onClickmap() {}
-
-  void _onClickvideo() {}
-
-  _onClickMenu(String value) {
-    switch (value) {
-      case "Editar":
-        print("Editar");
-        break;
-      case "Deletar":
-        print("Deletar");
-        break;
-      case "Share":
-        print("Share");
-        break;
-    }
-  }
-
-  void _onClickFavorito() {
-
-    //este service uni a classe carro com a classe favorito
-    FavoritoService.Favoritar(widget.carro);
-
-
-  }
-
-  bloco2() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(widget.carro.descricao,style: TextStyle(fontSize: 15),),
-        SizedBox(height: 18,),
-
-        StreamBuilder<String>(
-          stream: _loren.output,
-          builder: (context, snapshot) {
-            if(!snapshot.hasData){
-              return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
-            }
-            return Text(snapshot.data);
-          }
-        ),
-
-      ],
+        return Container();
+      }
     );
   }
 }
