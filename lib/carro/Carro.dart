@@ -45,4 +45,11 @@ class Carro {
     data['longitude'] = this.longitude;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Carro{id: $id, nome: $nome, tipo: $tipo, descricao: $descricao, urlFoto: $urlFoto, urlVideo: $urlVideo, latitude: $latitude, longitude: $longitude}';
+  }
+
+
 }

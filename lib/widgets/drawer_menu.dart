@@ -1,5 +1,7 @@
 import 'package:carros_app/settings.dart';
 
+import '../main.dart';
+
 
 
 class myDrawer extends StatelessWidget {
@@ -51,5 +53,5 @@ _onClickLogout(context) {
   Navigator.of(context).pop();
   replace(context, loginPage());
   Usuario.clear();
-
+  bloc_global.dispose();
 }

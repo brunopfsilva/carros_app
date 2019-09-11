@@ -56,6 +56,8 @@ class CarroDAO {
     return exists;
   }
 
+
+
   Future<int> count() async {
     final dbClient = await db;
     final list = await dbClient.rawQuery('select count(*) from carro');

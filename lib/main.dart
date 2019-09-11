@@ -1,7 +1,12 @@
+import 'package:carros_app/carro/favoritos_bloc.dart';
 import 'package:carros_app/settings.dart';
 import 'package:carros_app/splash.dart';
 
 void main() => runApp(MyApp());
+
+//bloc global
+final bloc_global = favoritosBloc();
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

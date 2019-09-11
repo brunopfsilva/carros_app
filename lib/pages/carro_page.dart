@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros_app/carro/carro-form-page.dart';
 import 'package:carros_app/carro/lore_bloc.dart';
-import 'package:carros_app/carro/loripsum_api.dart';
 import 'package:carros_app/favoritos/favorito_service.dart';
 import 'package:flutter/material.dart';
 import 'package:carros_app/carro/Carro.dart';
+import 'package:carros_app/utils/nav.dart';
 
 class CarroPage extends StatefulWidget {
   Carro carro;
 
   CarroPage(this.carro);
+
+  Color color = Colors.grey;
 
   @override
   _CarroPageState createState() => _CarroPageState();
@@ -21,6 +24,17 @@ class _CarroPageState extends State<CarroPage> {
   void initState() {
     super.initState();
     _loren.lorem();
+
+    // este future espera o retorno do resultado do processamento que é um favorito
+    FavoritoService.isFavorite(widget.carro).then((bool favorito){
+
+      setState(() {
+        //se favorito for true pinta de vermelho se nao pinta de cinza
+        widget.color = favorito ? Colors.red : Colors.grey;
+      });
+
+    });
+    
 
   }
 
@@ -119,7 +133,7 @@ class _CarroPageState extends State<CarroPage> {
                 IconButton(
                   icon: Icon(
                     Icons.favorite,
-                    color: Colors.redAccent,
+                    color: widget.color ,
                     size: 33,
                   ),
                   onPressed: _onClickFavorito,
@@ -146,6 +160,7 @@ class _CarroPageState extends State<CarroPage> {
     switch (value) {
       case "Editar":
         print("Editar");
+        push(context,CarroFormPage(carro: widget.carro));
         break;
       case "Deletar":
         print("Deletar");
@@ -156,12 +171,15 @@ class _CarroPageState extends State<CarroPage> {
     }
   }
 
-  void _onClickFavorito() {
+  void _onClickFavorito() async {
 
     //este service uni a classe carro com a classe favorito
-    FavoritoService.Favoritar(widget.carro);
+   bool favorito = await FavoritoService.Favoritar(widget.carro);
 
 
+   setState(() {
+     widget.color = favorito ? Colors.red : Colors.grey;
+   });
   }
 
   bloco2() {

@@ -1,3 +1,4 @@
+import 'package:carros_app/carro/carro-form-page.dart';
 import 'package:carros_app/pages/favoritos_page.dart';
 import 'package:carros_app/settings.dart';
 import 'package:carros_app/widgets/carrosPage.dart';
@@ -76,8 +77,19 @@ class _homePageState extends State<homePage> with SingleTickerProviderStateMixin
         ]),
         drawer: Container(
             width: MediaQuery.of(context).size.width / 1.26, child: myDrawer()),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: _addCar,
+
+            
+            ),
+        
       ),
     );
+  }
+
+  void _addCar() {
+    push(context, CarroFormPage());
   }
 }
 
