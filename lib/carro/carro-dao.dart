@@ -11,7 +11,7 @@ class CarroDAO {
 
   Future<int> save(Carro carro) async {
     var dbClient = await db;
-    var id = await dbClient.insert("carro", carro.toJson(),
+    var id = await dbClient.insert("carro", carro.toMap(),
         //da update nos registos ja existentes evitando conflitos
         conflictAlgorithm: ConflictAlgorithm.replace);
     print('id: $id');

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros_app/carro/carro-form-page.dart';
 import 'package:carros_app/carro/lore_bloc.dart';
 import 'package:carros_app/favoritos/favorito_service.dart';
+import 'package:carros_app/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:carros_app/carro/Carro.dart';
 import 'package:carros_app/utils/nav.dart';
@@ -90,7 +91,8 @@ class _CarroPageState extends State<CarroPage> {
         child: ListView(children: <Widget>[
 
           CachedNetworkImage(
-            imageUrl: widget.carro.urlFoto,
+            imageUrl: widget.carro.urlFoto ??
+                        "https://carros-springboot.herokuapp.com/api/v1/carros/tipo/esportivos/Ferrari_FF.png",
             placeholder: (context, url) =>
             Center(child: new CircularProgressIndicator()),
             errorWidget: (context, url, error) =>
@@ -164,42 +166,60 @@ class _CarroPageState extends State<CarroPage> {
         break;
       case "Deletar":
         print("Deletar");
-        break;
-      case "Share":
-        print("Share");
-        break;
-    }
-  }
-
-  void _onClickFavorito() async {
-
-    //este service uni a classe carro com a classe favorito
-   bool favorito = await FavoritoService.Favoritar(widget.carro);
-
-
-   setState(() {
-     widget.color = favorito ? Colors.red : Colors.grey;
-   });
-  }
-
-  bloco2() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(widget.carro.descricao,style: TextStyle(fontSize: 15),),
-        SizedBox(height: 18,),
-
-        StreamBuilder<String>(
-          stream: _loren.output,
-          builder: (context, snapshot) {
-            if(!snapshot.hasData){
-              return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
+        _deletar();
+                break;
+              case "Share":
+                print("Share");
+                break;
             }
-            return Text(snapshot.data);
           }
-        ),
+        
+          void _onClickFavorito() async {
+        
+            //este service uni a classe carro com a classe favorito
+           bool favorito = await FavoritoService.Favoritar(widget.carro);
+        
+        
+           setState(() {
+             widget.color = favorito ? Colors.red : Colors.grey;
+           });
+          }
+        
+          bloco2() {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(widget.carro.descricao,style: TextStyle(fontSize: 15),),
+                SizedBox(height: 18,),
+        
+                StreamBuilder<String>(
+                  stream: _loren.output,
+                  builder: (context, snapshot) {
+                    if(!snapshot.hasData){
+                      return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
+                    }
+                    return Text(snapshot.data);
+                  }
+                ),
+        
+              ],
+            );
+          }
 
-      ],
-    );
-  }
-}
+ void _deletar() async {
+          
+          apiResponse<bool> response = await CarrosApi.delete(widget.carro);
+
+          if(response.ok){
+            alert(context, "Carro deletado com sucesso", "",callback: ()  {
+              Navigator.pop(context);
+            });
+          }
+
+
+        }
+
+
+        }
+        
+       

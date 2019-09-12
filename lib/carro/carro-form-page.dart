@@ -1,8 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros_app/carro/Carro.dart';
+import 'package:carros_app/utils/alert.dart';
+import 'package:carros_app/utils/api_response.dart';
 import 'package:carros_app/widgets/app_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'carroApi.dart';
 
 class CarroFormPage extends StatefulWidget {
   final Carro carro;
@@ -226,12 +230,21 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Salvar o carro $c");
 
-    await Future.delayed(Duration(seconds: 3));
+
+    apiResponse<bool> response = await CarrosApi.Save(c);
+
+    if(response.ok){
+
+      alert(context,"Carro salvo","",callback: (){
+        Navigator.pop(context);
+      });
+    }else {
+      alert(context,response.msg,"");
+    }
 
     setState(() {
       _showProgress = false;
     });
 
-    print("Fim.");
   }
 }

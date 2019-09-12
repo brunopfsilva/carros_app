@@ -1,6 +1,6 @@
 import 'package:carros_app/settings.dart';
 
-alert(BuildContext context,String msg,String title){
+alert(BuildContext context,String msg,String title,{Function callback}){
   showDialog(context: context,
   barrierDismissible: false,
     builder: (context){
@@ -12,7 +12,12 @@ alert(BuildContext context,String msg,String title){
         actions: <Widget>[
           FlatButton(
             child: Text("Ok"),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+               Navigator.pop(context);
+               if(callback != null){
+                 callback();
+               }
+            },
           )
         ],
       ),

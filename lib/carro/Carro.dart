@@ -1,3 +1,5 @@
+import 'dart:convert' as covert;
+
 
 class Carro {
   int id;
@@ -33,9 +35,9 @@ class Carro {
 
   //gera o map com o objecto para pode salvar o objecto no servidor
   //salva no banco de dados convertendo ele para um map para salvar no banco de dados ou nas preferencias
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    data['id'] = this.id ?? 0;
     data['nome'] = this.nome;
     data['tipo'] = this.tipo;
     data['descricao'] = this.descricao;
@@ -45,6 +47,12 @@ class Carro {
     data['longitude'] = this.longitude;
     return data;
   }
+
+  String toJson () {
+    String jsonobj = covert.json.encode(toMap().toString());
+    return jsonobj;
+  }
+
 
   @override
   String toString() {

@@ -28,7 +28,8 @@ class carroList extends StatelessWidget {
                   children: <Widget>[
                     Center(
                       child: CachedNetworkImage(
-                        imageUrl: c.urlFoto,
+                        imageUrl: c.urlFoto ??
+                        "https://carros-springboot.herokuapp.com/api/v1/carros/tipo/esportivos/Ferrari_FF.png",
                         placeholder: (context, url) =>
                             new CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>
