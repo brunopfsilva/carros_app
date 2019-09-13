@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:carros_app/carro/carro-dao.dart';
 import 'package:carros_app/settings.dart';
+import 'package:carros_app/utils/upload_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -56,8 +59,16 @@ class CarrosApi {
 
   }
 
-  static Future<apiResponse<bool>> Save(Carro c) async{
+  static Future<apiResponse<bool>> Save(Carro c,File file) async{
 
+    if(file != null){
+      final response = UploadService.upload(file);
+      print(response);
+
+      if(response == true){
+
+      }
+    }
 
     Usuario usuario = await Usuario.get();
 

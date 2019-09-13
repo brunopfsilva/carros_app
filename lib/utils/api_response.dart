@@ -12,6 +12,8 @@ class apiResponse <T> {
     ok = true;
   }
 
+
+
   apiResponse.error (this.msg){
     ok = false;
   }

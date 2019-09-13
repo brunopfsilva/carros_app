@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros_app/carro/Carro.dart';
 import 'package:carros_app/utils/alert.dart';
@@ -5,6 +7,7 @@ import 'package:carros_app/utils/api_response.dart';
 import 'package:carros_app/widgets/app_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'carroApi.dart';
 
@@ -27,6 +30,8 @@ class _CarroFormPageState extends State<CarroFormPage> {
   int _radioIndex = 0;
 
   var _showProgress = false;
+
+  File _file;
 
   Carro get carro => widget.carro;
 
@@ -68,7 +73,6 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
   _form() {
     return Form(
-
       key: this._formKey,
       child: ListView(
         children: <Widget>[
@@ -138,19 +142,25 @@ class _CarroFormPageState extends State<CarroFormPage> {
   }
 
   _headerFoto() {
-    return carro != null
-        ? CachedNetworkImage(
-            imageUrl: carro.urlFoto,
-          )
-        : Icon(Icons.camera_alt,color: Colors.deepPurpleAccent,
-          size: 135,);
-
+    return InkWell(
+      onTap: _onClickFoto,
+      child: _file != null
+          ? Image.file(_file)
+          : carro != null
+              ? CachedNetworkImage(
+                  imageUrl: carro.urlFoto,
+                )
+              : Icon(
+                  Icons.camera_alt,
+                  color: Colors.deepPurpleAccent,
+                  size: 135,
+                ),
+    );
   }
 
   _radioTipo() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
-
       children: <Widget>[
         Radio(
           value: 0,
@@ -230,21 +240,27 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Salvar o carro $c");
 
+    apiResponse<bool> response = await CarrosApi.Save(c,_file);
 
-    apiResponse<bool> response = await CarrosApi.Save(c);
-
-    if(response.ok){
-
-      alert(context,"Carro salvo","",callback: (){
+    if (response.ok) {
+      alert(context, "Carro salvo", "", callback: () {
         Navigator.pop(context);
       });
-    }else {
-      alert(context,response.msg,"");
+    } else {
+      alert(context, response.msg, "");
     }
 
     setState(() {
       _showProgress = false;
     });
+  }
 
+  void _onClickFoto() async {
+    File file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        this._file = file;
+      });
+    }
   }
 }

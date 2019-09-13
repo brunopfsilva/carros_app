@@ -20,7 +20,7 @@ dependencies:
   cached_network_image: ^1.1.1
   shared_preferences: ^0.5.3+4
   connectivity: ^0.4.4
-
+  image_picker: ^0.6.1+4
   flutter:
     sdk: flutter
 
