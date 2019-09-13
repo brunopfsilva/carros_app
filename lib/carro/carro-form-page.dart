@@ -259,7 +259,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
     File file = await ImagePicker.pickImage(source: ImageSource.camera);
     if (file != null) {
       setState(() {
-        this._file = file;
+        this._file = file; //
       });
     }
   }
