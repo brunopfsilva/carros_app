@@ -1,11 +1,12 @@
 import 'package:carros_app/carro/favoritos_bloc.dart';
 import 'package:carros_app/settings.dart';
 import 'package:carros_app/splash.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
 //bloc global
-final bloc_global = favoritosBloc();
+//final bloc_global = favoritosBloc();
 
 
 class MyApp extends StatelessWidget {
@@ -16,18 +17,28 @@ class MyApp extends StatelessWidget {
     const PrimaryColor = const Color(0xFF151026);
 
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Colors.deepPurple[800],
-          accentColor: Colors.deepPurpleAccent,
-        //primaryColorDark: Colors.deepPurpleAccent,
-        //  primarySwatch: Colors.deepPurple,
-       // brightness: Brightness.light
+    return MultiProvider(
+      providers: [
+        Provider<favoritosBloc>(
+          //chama o bloc
+          builder: (context) => new favoritosBloc(),
+          //tira o bloc da meoria fechando a stream
+          dispose: (context,bloc) => bloc.dispose(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            primaryColor: Colors.deepPurple[800],
+            accentColor: Colors.deepPurpleAccent,
+          //primaryColorDark: Colors.deepPurpleAccent,
+          //  primarySwatch: Colors.deepPurple,
+         // brightness: Brightness.light
 
+        ),
+
+        home: SplashPage(),
       ),
-
-      home: SplashPage(),
     );
   }
 

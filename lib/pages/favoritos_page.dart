@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:carros_app/carro/carros_bloc.dart';
 import 'package:carros_app/widgets/carrosList.dart';
 import 'package:carros_app/main.dart';
+import 'package:provider/provider.dart';
 
 class FavoritosPage extends StatefulWidget {
   @override
@@ -19,7 +20,10 @@ class _FavoritosPageState extends State<FavoritosPage> with AutomaticKeepAliveCl
   void initState() {
     super.initState();
 
-    bloc_global.loadData();
+    // listen: false faz o bloc para de ouvir o widget
+    favoritosBloc fbloc = Provider.of<favoritosBloc>(context,listen: false);
+    //bloc_global.loadData();
+    fbloc.loadData();
 
 
   }
@@ -33,10 +37,16 @@ class _FavoritosPageState extends State<FavoritosPage> with AutomaticKeepAliveCl
   @override
   bool get wantKeepAlive => true;
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    favoritosBloc fbloc = Provider.of<favoritosBloc>(context);
+
+
     return StreamBuilder(
-      stream: bloc_global.stream,
+      stream: fbloc.stream,
       builder: (context, snapshot) {
 
         if(snapshot.hasError){
@@ -62,7 +72,8 @@ class _FavoritosPageState extends State<FavoritosPage> with AutomaticKeepAliveCl
 
   Future<void> _onRefresh() {
 
-    return bloc_global.loadData();
+    //return bloc_global.loadData();
+    return Provider.of<favoritosBloc>(context).loadData();
 
   }
 }

@@ -177,7 +177,7 @@ class _CarroPageState extends State<CarroPage> {
           void _onClickFavorito() async {
         
             //este service uni a classe carro com a classe favorito
-           bool favorito = await FavoritoService.Favoritar(widget.carro);
+           bool favorito = await FavoritoService.Favoritar(context,widget.carro);
         
         
            setState(() {

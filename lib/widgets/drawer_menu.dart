@@ -53,5 +53,5 @@ _onClickLogout(context) {
   Navigator.of(context).pop();
   replace(context, loginPage());
   Usuario.clear();
-  bloc_global.dispose();
+ // bloc_global.dispose();
 }
