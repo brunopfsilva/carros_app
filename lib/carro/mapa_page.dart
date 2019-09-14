@@ -31,7 +31,7 @@ class _MapPageState extends State<MapPage> {
             target: latlng(),
             zoom: 12,
           ),
-          mapType: MapType.normal,
+          mapType: MapType.satellite,
           onMapCreated: _onMapCreated,
           zoomGesturesEnabled: true,
           markers: Set.of(_getMarkers()),

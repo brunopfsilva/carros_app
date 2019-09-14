@@ -26,7 +26,11 @@ dependencies:
   url_launcher: any
   image_picker: ^0.6.1+4
   provider: ^3.1.0
+  #maps
   google_maps_flutter: any
+  #firebase
+  flutter_auth_buttons: any
+
   flutter:
     sdk: flutter
 
