@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros_app/carro/lore_bloc.dart';
 import 'package:carros_app/carro/loripsum_api.dart';
+import 'package:carros_app/carro/mapa_page.dart';
 import 'package:carros_app/favoritos/favorito_service.dart';
+import 'package:carros_app/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:carros_app/carro/Carro.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarroPage extends StatefulWidget {
   Carro carro;
@@ -38,11 +41,14 @@ class _CarroPageState extends State<CarroPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.place),
-            onPressed: _onClickmap,
+            onPressed: () {
+              _onClickmap(widget.carro); }
           ),
           IconButton(
             icon: Icon(Icons.videocam),
-            onPressed: _onClickvideo,
+            onPressed: (){
+              _onClickvideo(widget.carro);
+            },
           ),
           PopupMenuButton<String>(
             onSelected: (String value) => _onClickMenu(value),
@@ -137,9 +143,24 @@ class _CarroPageState extends State<CarroPage> {
     );
   }
 
-  void _onClickmap() {}
+  void _onClickmap(Carro carro) {
 
-  void _onClickvideo() {}
+    print((widget.carro.urlVideo));
+    if(widget.carro.latitude != null || widget.carro.longitude != null){
+      push(context, MapPage(carro));
+    }
+
+  }
+
+  void _onClickvideo(Carro carro) {
+
+    print((widget.carro.urlVideo));
+    if(widget.carro.urlVideo != null || widget.carro.urlVideo.isNotEmpty){
+        launch(carro.urlVideo);
+
+    }
+
+  }
 
   _onClickMenu(String value) {
     switch (value) {
