@@ -1,7 +1,5 @@
 library settings;
 
-
-
 export 'package:carros_app/utils/api_response.dart';
 export 'dart:convert';
 export 'package:carros_app/login/Usuario.dart';
@@ -15,7 +13,6 @@ export 'package:carros_app/widgets/carrosList.dart';
 //pages
 export 'package:carros_app/carro/Carro.dart';
 export 'package:carros_app/pages/login_page.dart';
-
 
 export 'package:carros_app/carro/carroApi.dart';
 

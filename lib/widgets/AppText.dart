@@ -12,16 +12,16 @@ class AppText extends StatelessWidget {
   FocusNode nextFocus;
 
   AppText(
-      this.label,
-      this.hint, {
-        this.password = false,
-        this.controller,
-        this.validator,
-        this.keyboardType,
-        this.textInputAction,
-        this.focusNode,
-        this.nextFocus,
-      });
+    this.label,
+    this.hint, {
+    this.password = false,
+    this.controller,
+    this.validator,
+    this.keyboardType,
+    this.textInputAction,
+    this.focusNode,
+    this.nextFocus,
+  });
 
   @override
   Widget build(BuildContext context) {

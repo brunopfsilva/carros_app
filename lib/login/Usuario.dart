@@ -13,12 +13,12 @@ class Usuario {
 
   Usuario(
       {this.id,
-        this.login,
-        this.nome,
-        this.email,
-        this.urlFoto,
-        this.token,
-        this.roles});
+      this.login,
+      this.nome,
+      this.email,
+      this.urlFoto,
+      this.token,
+      this.roles});
 
   //metodo usado para ler dados que vem do webservice
   Usuario.fromJson(Map<String, dynamic> json) {
@@ -28,8 +28,6 @@ class Usuario {
     email = json['email'];
     urlFoto = json['urlFoto'];
     token = json['token'];
-
-
   }
 
   //metodo usado para pega objecto e salvar no banco de dados
@@ -44,25 +42,22 @@ class Usuario {
     return data;
   }
 
-  void save(){
-
+  void save() {
     Map map = toJson();
 
     String json = convert.json.encode(map);
 
     Prefs.setString("user.prefs", json);
-
   }
 
-  static void clear(){
+  static void clear() {
     Prefs.setString("user.prefs", "");
   }
 
   static Future<Usuario> get() async {
-
     String json = await Prefs.getString("user.prefs");
 
-    if(json.isEmpty){
+    if (json.isEmpty) {
       return null;
     }
 
@@ -71,17 +66,11 @@ class Usuario {
     Usuario usuario = Usuario.fromJson(map);
 
     return usuario;
-
-
-
   }
-
 
   //lembrar da da orverride no tostring para nao impprimir instance of object ou instance of usuario
   @override
   String toString() {
     return 'Usuario{id: $id, login: $login, nome: $nome, email: $email, urlFoto: $urlFoto, token: $token}';
   }
-
-
 }

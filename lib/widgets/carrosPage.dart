@@ -5,27 +5,20 @@ import 'package:carros_app/carro/carros_bloc.dart';
 import 'package:carros_app/settings.dart';
 import 'package:carros_app/utils/test_error.dart';
 
-
 class carrosPage extends StatefulWidget {
-
-
   String tipo;
+
   carrosPage(this.tipo);
 
   @override
   _carrosPageState createState() => _carrosPageState();
-
-
-
 }
 
-class _carrosPageState extends State<carrosPage> with AutomaticKeepAliveClientMixin<carrosPage> {
-
-
-  List<Carro>carros;
+class _carrosPageState extends State<carrosPage>
+    with AutomaticKeepAliveClientMixin<carrosPage> {
+  List<Carro> carros;
 
   //lembrar de tipa o stream com os dados que precisa fazer o tratamento
-
 
   String get tipo => widget.tipo;
 
@@ -35,7 +28,6 @@ class _carrosPageState extends State<carrosPage> with AutomaticKeepAliveClientMi
   @override
   // mantem a aba salva.
   bool get wantKeepAlive => true;
-
 
   @override
   void initState() {
@@ -56,10 +48,8 @@ class _carrosPageState extends State<carrosPage> with AutomaticKeepAliveClientMi
     });
 */
 
-
     _bloc.loadData(tipo);
   }
-
 
   @override
   void dispose() {
@@ -73,7 +63,7 @@ class _carrosPageState extends State<carrosPage> with AutomaticKeepAliveClientMi
     super.build(context);
 
     return StreamBuilder<List<Carro>>(
-      //saida de dados da stream
+        //saida de dados da stream
         stream: _bloc.stream,
         initialData: null,
         builder: (context, snapshot) {
@@ -82,39 +72,29 @@ class _carrosPageState extends State<carrosPage> with AutomaticKeepAliveClientMi
           }
 
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),
+              ),
+            );
           }
-
 
           List<Carro> carros = snapshot.data;
 
-
           return RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: carroList(carros));
-        }
-
-
-    );
-
+              onRefresh: _onRefresh, child: carroList(carros));
+        });
 
     /* if(carros == null){
       return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),),);
     }
       return ListaCarros(carros);
 */
-
-
   }
-
-
-
 
   Future<void> _onRefresh() {
     return Future.delayed(Duration(seconds: 3), () {
       _bloc.loadData(tipo);
     });
   }
-
 }

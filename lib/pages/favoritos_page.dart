@@ -12,20 +12,16 @@ class FavoritosPage extends StatefulWidget {
   _FavoritosPageState createState() => _FavoritosPageState();
 }
 
-class _FavoritosPageState extends State<FavoritosPage> with AutomaticKeepAliveClientMixin<FavoritosPage>{
-
-
-
+class _FavoritosPageState extends State<FavoritosPage>
+    with AutomaticKeepAliveClientMixin<FavoritosPage> {
   @override
   void initState() {
     super.initState();
 
     // listen: false faz o bloc para de ouvir o widget
-    favoritosBloc fbloc = Provider.of<favoritosBloc>(context,listen: false);
+    favoritosBloc fbloc = Provider.of<favoritosBloc>(context, listen: false);
     //bloc_global.loadData();
     fbloc.loadData();
-
-
   }
 
   @override
@@ -37,43 +33,36 @@ class _FavoritosPageState extends State<FavoritosPage> with AutomaticKeepAliveCl
   @override
   bool get wantKeepAlive => true;
 
-
-
   @override
   Widget build(BuildContext context) {
-
     favoritosBloc fbloc = Provider.of<favoritosBloc>(context);
 
-
     return StreamBuilder(
-      stream: fbloc.stream,
-      builder: (context, snapshot) {
+        stream: fbloc.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return TextError("Nao foi possivel buscar os carros");
+          }
 
-        if(snapshot.hasError){
-          return TextError("Nao foi possivel buscar os carros");
-        }
+          if (!snapshot.hasData) {
+            Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.deepPurple),
+              ),
+            );
+          }
 
-        if(!snapshot.hasData){
-          Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.deepPurple),),);
-        }
+          List<Carro> carros = snapshot.data;
 
-        List<Carro>carros = snapshot.data;
-
-        return RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: carroList(carros),
-
-        );
-      }
-    );
-
-
+          return RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: carroList(carros),
+          );
+        });
   }
 
   Future<void> _onRefresh() {
-
     //return bloc_global.loadData();
     return Provider.of<favoritosBloc>(context).loadData();
-
   }
 }

@@ -96,13 +96,13 @@ class _loginPageState extends State<loginPage> {
                     showProgress: snapshot.data ?? false,
                   );
                 }),
-            Container(height: 45,
-            margin: EdgeInsets.only(top: 20),
-            child: GoogleSignInButton(
-              onPressed: _onClickGoogleSign,
+            Container(
+              height: 45,
+              margin: EdgeInsets.only(top: 20),
+              child: GoogleSignInButton(
+                onPressed: _onClickGoogleSign,
+              ),
             ),
-            ),
-
 
             SizedBox(height: 18.0),
             GestureDetector(

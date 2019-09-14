@@ -40,13 +40,13 @@ class _CarroPageState extends State<CarroPage> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.place),
-            onPressed: () {
-              _onClickmap(widget.carro); }
-          ),
+              icon: Icon(Icons.place),
+              onPressed: () {
+                _onClickmap(widget.carro);
+              }),
           IconButton(
             icon: Icon(Icons.videocam),
-            onPressed: (){
+            onPressed: () {
               _onClickvideo(widget.carro);
             },
           ),
@@ -79,15 +79,12 @@ class _CarroPageState extends State<CarroPage> {
     return Container(
         padding: EdgeInsets.all(16.0),
         child: ListView(children: <Widget>[
-
           CachedNetworkImage(
             imageUrl: widget.carro.urlFoto,
             placeholder: (context, url) =>
                 Center(child: new CircularProgressIndicator()),
-            errorWidget: (context, url, error) =>
-            new Icon(Icons.error),
+            errorWidget: (context, url, error) => new Icon(Icons.error),
           ),
-
           SizedBox(
             height: 9,
           ),
@@ -144,22 +141,17 @@ class _CarroPageState extends State<CarroPage> {
   }
 
   void _onClickmap(Carro carro) {
-
     print((widget.carro.urlVideo));
-    if(widget.carro.latitude != null || widget.carro.longitude != null){
+    if (widget.carro.latitude != null || widget.carro.longitude != null) {
       push(context, MapPage(carro));
     }
-
   }
 
   void _onClickvideo(Carro carro) {
-
     print((widget.carro.urlVideo));
-    if(widget.carro.urlVideo != null || widget.carro.urlVideo.isNotEmpty){
-        launch(carro.urlVideo);
-
+    if (widget.carro.urlVideo != null || widget.carro.urlVideo.isNotEmpty) {
+      launch(carro.urlVideo);
     }
-
   }
 
   _onClickMenu(String value) {
@@ -185,24 +177,26 @@ class _CarroPageState extends State<CarroPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(widget.carro.descricao, style: TextStyle(fontSize: 15),),
-        SizedBox(height: 18,),
-
+        Text(
+          widget.carro.descricao,
+          style: TextStyle(fontSize: 15),
+        ),
+        SizedBox(
+          height: 18,
+        ),
         StreamBuilder<String>(
             stream: _loren.output,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(
-                      Colors.deepPurpleAccent),),);
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.deepPurpleAccent),
+                  ),
+                );
               }
               return Text(snapshot.data);
-            }
-        ),
-
+            }),
       ],
     );
   }
-
-
 }

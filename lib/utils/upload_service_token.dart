@@ -19,11 +19,10 @@ class UploadService {
 
       Usuario usuario = await Usuario.get();
 
-      Map<String,String> hearders = {
+      Map<String, String> hearders = {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${usuario.token}"
       };
-
 
       var params = {
         "fileName": fileName,
@@ -38,14 +37,14 @@ class UploadService {
 
       final response = await http
           .post(
-        url,
-        body: json,
-        headers: hearders,
-      )
+            url,
+            body: json,
+            headers: hearders,
+          )
           .timeout(
-        Duration(seconds: 120),
-        onTimeout: _onTimeOut,
-      );
+            Duration(seconds: 120),
+            onTimeout: _onTimeOut,
+          );
 
       print("http.upload << " + response.body);
 

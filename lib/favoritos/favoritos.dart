@@ -1,10 +1,8 @@
 class Favoritos {
-
   int id;
   String nome;
 
-
-  Favoritos.fromMap(Map<String,dynamic>map){
+  Favoritos.fromMap(Map<String, dynamic> map) {
     id = map["id"];
     nome = map["nome"];
   }
@@ -22,6 +20,4 @@ class Favoritos {
   String toString() {
     return 'Favoritos{id: $id, nome: $nome}';
   }
-
-
 }

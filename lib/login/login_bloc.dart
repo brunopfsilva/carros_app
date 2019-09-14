@@ -1,6 +1,3 @@
-
-
-
 import 'dart:async';
 
 import 'package:carros_app/login/login_api_user.dart';
@@ -10,16 +7,11 @@ import 'Usuario.dart';
 import 'login_api.dart';
 
 class loginBloc {
-
-
   final _streamController = StreamController<bool>();
-
-
 
   Stream<bool> get hear => _streamController.stream;
 
-  Future<apiResponse<Usuario>> login (String login,String senha) async {
-
+  Future<apiResponse<Usuario>> login(String login, String senha) async {
     _streamController.sink.add(true);
 
     apiResponse response = await LoginApiUser.login(login, senha);
@@ -29,14 +21,7 @@ class loginBloc {
     return response;
   }
 
-
-
-  dispose (){
-
-
+  dispose() {
     _streamController.close();
-
   }
-
-
 }

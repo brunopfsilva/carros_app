@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 
 // Data Access Object
 class FavoritoDao {
-
   Future<Database> get db => DatabaseHelper.getInstance().db;
 
   Future<int> save(Favoritos favorito) async {
@@ -19,25 +18,24 @@ class FavoritoDao {
     return id;
   }
 
-
-
   Future<List<Carro>> findAllFv() async {
     final dbClient = await db;
 
-    final list = await dbClient.rawQuery('select * from carro c, favorito f where c.id = f.id');
+    final list = await dbClient
+        .rawQuery('select * from carro c, favorito f where c.id = f.id');
 
     final carro = list.map<Carro>((json) => Carro.fromJson(json)).toList();
 
     return carro;
   }
 
-
   Future<List<Favoritos>> findAll() async {
     final dbClient = await db;
 
     final list = await dbClient.rawQuery('select * from favorito');
 
-    final favoritos = list.map<Favoritos>((json) => Favoritos.fromMap(json)).toList();
+    final favoritos =
+        list.map<Favoritos>((json) => Favoritos.fromMap(json)).toList();
 
     return favoritos;
   }
@@ -45,9 +43,11 @@ class FavoritoDao {
   Future<List<Favoritos>> findAllByTipo(String tipo) async {
     final dbClient = await db;
 
-    final list = await dbClient.rawQuery('select * from favorito where tipo =? ',[tipo]);
+    final list = await dbClient
+        .rawQuery('select * from favorito where tipo =? ', [tipo]);
 
-    final favoritos = list.map<Favoritos>((json) => Favoritos.fromMap(json)).toList();
+    final favoritos =
+        list.map<Favoritos>((json) => Favoritos.fromMap(json)).toList();
 
     return favoritos;
   }
@@ -55,7 +55,7 @@ class FavoritoDao {
   Future<Favoritos> findById(int id) async {
     var dbClient = await db;
     final list =
-    await dbClient.rawQuery('select * from favorito where id = ?', [id]);
+        await dbClient.rawQuery('select * from favorito where id = ?', [id]);
 
     if (list.length > 0) {
       return new Favoritos.fromMap(list.first);

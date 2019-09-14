@@ -47,7 +47,7 @@ class _MapPageState extends State<MapPage> {
         markerId: MarkerId("1"),
         position: latlng(),
         infoWindow:
-        InfoWindow(title: carro.nome, snippet: "Fábrica do ${carro.nome}"),
+            InfoWindow(title: carro.nome, snippet: "Fábrica do ${carro.nome}"),
         onTap: () {
           print("> ${carro.nome}");
         },

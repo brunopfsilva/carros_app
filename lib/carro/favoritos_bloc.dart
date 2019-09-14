@@ -1,6 +1,3 @@
-
-
-
 import 'dart:async';
 
 import 'package:carros_app/carro/carroApi.dart';
@@ -11,50 +8,38 @@ import 'Carro.dart';
 import 'package:carros_app/carro/carro-dao.dart';
 
 class favoritosBloc {
-
-
-
   final _streamController = StreamController<List<Carro>>.broadcast();
 
-
-
   //expoe a stream para o widget ficar ouvindo
-  Stream <List<Carro>> get stream => _streamController.stream.asBroadcastStream();
+  Stream<List<Carro>> get stream =>
+      _streamController.stream.asBroadcastStream();
+
   //Stream <List<Carro>> get stream => _streamController.stream;
 
-  Future<List<Carro>>loadData() async {
+  Future<List<Carro>> loadData() async {
     //pegar os dados com stream
     try {
-
-      List<Carro>carros = await FavoritoService.getCarros();
+      List<Carro> carros = await FavoritoService.getCarros();
 
       final dao = CarroDAO();
       //salva todos os carros no banco de dados
-      for(Carro c in carros){
+      for (Carro c in carros) {
         dao.save(c);
       }
-      
+
       //joga os dados na stream
-      if(_streamController != null) {
+      if (_streamController != null) {
         _streamController.sink.add(carros);
         return carros;
-      }else {
+      } else {
         return null;
       }
-
     } on Exception catch (e) {
       _streamController.sink.addError(e);
     }
   }
 
-  void dispose (){
-
-
+  void dispose() {
     _streamController.close();
-
   }
-
-
-
-
 }

@@ -1,51 +1,34 @@
 import 'package:carros_app/settings.dart';
 import 'package:http/http.dart' as http;
 
-
 class LoginApiUser {
+  static Future<apiResponse<Usuario>> login(String login, String senha) async {
+    try {
+      var url = 'https://carros-springboot.herokuapp.com/api/v2/login';
 
-    static Future<apiResponse<Usuario>> login (String login,String senha) async {
+      Map<String, String> hearders = {"Content-Type": "application/json"};
 
-        try{
+      //sempre que for json objecto trabalhar com maps
+      Map params = {'username': login, 'password': senha};
 
-    var url = 'https://carros-springboot.herokuapp.com/api/v2/login';
+      String s = json.encode(params);
 
-    Map<String,String> hearders = {
-      "Content-Type": "application/json"
-    };
+      print(">> $s");
 
-    //sempre que for json objecto trabalhar com maps
-    Map params = {'username': login, 'password': senha};
+      var response = await http.post(url, body: s, headers: hearders);
 
+      Map mapResponse = json.decode(response.body);
 
+      Usuario usuario = Usuario.fromJson(mapResponse);
 
-    String s = json.encode(params);
-
-    print(">> $s");
-
-    var response = await http.post(
-        url, body: s,headers: hearders);
-
-
-    Map mapResponse = json.decode(response.body);
-
-
-    Usuario usuario = Usuario.fromJson(mapResponse);
-
-
-
-    if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         usuario.save();
         return apiResponse.ok(usuario);
-    } else {
+      } else {
         return apiResponse.error(mapResponse["error"]);
+      }
+    } catch (error, exception) {
+      return apiResponse.error("Error não foi possivel fazer o login$error");
     }
-
-        }catch(error,exception){
-            return apiResponse.error("Error não foi possivel fazer o login$error");
-        }
   }
-
-
-
 }

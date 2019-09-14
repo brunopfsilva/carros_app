@@ -6,7 +6,6 @@ import 'package:sqflite/sqflite.dart';
 
 // Data Access Object
 class CarroDAO {
-
   Future<Database> get db => DatabaseHelper.getInstance().db;
 
   Future<int> save(Carro carro) async {
@@ -31,7 +30,8 @@ class CarroDAO {
   Future<List<Carro>> findAllByTipo(String tipo) async {
     final dbClient = await db;
 
-    final list = await dbClient.rawQuery('select * from carro where tipo =? ',[tipo]);
+    final list =
+        await dbClient.rawQuery('select * from carro where tipo =? ', [tipo]);
 
     final carros = list.map<Carro>((json) => Carro.fromJson(json)).toList();
 
@@ -55,8 +55,6 @@ class CarroDAO {
     var exists = c != null;
     return exists;
   }
-
-
 
   Future<int> count() async {
     final dbClient = await db;

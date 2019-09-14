@@ -30,6 +30,8 @@ dependencies:
   google_maps_flutter: any
   #firebase
   flutter_auth_buttons: any
+  firebase_auth: any
+  google_sign_in: any
 
   flutter:
     sdk: flutter

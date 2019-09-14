@@ -2,7 +2,6 @@ import 'dart:convert' as covert;
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
 class Carro {
   int id;
   String nome;
@@ -15,18 +14,17 @@ class Carro {
 
   Carro(
       {this.id,
-        this.nome,
-        this.tipo,
-        this.descricao,
-        this.urlFoto,
-        this.urlVideo,
-        this.latitude,
-        this.longitude});
+      this.nome,
+      this.tipo,
+      this.descricao,
+      this.urlFoto,
+      this.urlVideo,
+      this.latitude,
+      this.longitude});
 
   get latlng => LatLng(
       latitude == null || latitude.isEmpty ? 0.0 : double.parse(latitude),
-      longitude == null || longitude.isEmpty ? 0.0 : double.parse(longitude)
-  );
+      longitude == null || longitude.isEmpty ? 0.0 : double.parse(longitude));
 
   //faz o parse do objecto para o json ou seja usando para leitura de dados
   Carro.fromJson(Map<String, dynamic> json) {
@@ -55,16 +53,13 @@ class Carro {
     return data;
   }
 
-  String toJson () {
+  String toJson() {
     String jsonobj = covert.json.encode(toMap().toString());
     return jsonobj;
   }
-
 
   @override
   String toString() {
     return 'Carro{id: $id, nome: $nome, tipo: $tipo, descricao: $descricao, urlFoto: $urlFoto, urlVideo: $urlVideo, latitude: $latitude, longitude: $longitude}';
   }
-
-
 }

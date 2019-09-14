@@ -29,14 +29,14 @@ class UploadService {
 
     final response = await http
         .post(
-      url,
-      body: json,
-      headers: headers,
-    )
+          url,
+          body: json,
+          headers: headers,
+        )
         .timeout(
-      Duration(seconds: 30),
-      onTimeout: _onTimeOut,
-    );
+          Duration(seconds: 30),
+          onTimeout: _onTimeOut,
+        );
 
     print("http.upload << " + response.body);
 

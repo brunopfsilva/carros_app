@@ -10,8 +10,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="carros_app"
         android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA6mLRLi6x5OewrbpUTHSnH1anx-JyIpR8"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA6mLRLi6x5OewrbpUTHSnH1anx-JyIpR8" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -27,8 +28,8 @@
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
