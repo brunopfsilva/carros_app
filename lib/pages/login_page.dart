@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:carros_app/login/firebase_service.dart';
 import 'package:carros_app/login/login_bloc.dart';
+import 'package:carros_app/login/login_bloc_firebase.dart';
+import 'package:carros_app/pages/cadastro-page.dart';
 import 'package:carros_app/settings.dart';
 
 import 'package:carros_app/login/Usuario.dart';
@@ -23,7 +26,7 @@ class _loginPageState extends State<loginPage> {
 
   bool _showProgress = false;
 
-  final _bloc = loginBloc();
+  final _bloc = loginBlocFire();
 
   @override
   void initState() {
@@ -34,7 +37,7 @@ class _loginPageState extends State<loginPage> {
     future.then((Usuario user) {
       //mantem o usuario logado
       if (user != null) {
-        replace(context, homePage(user));
+        replace(context, homePage(user: user,));
       }
 
       /*  setState(() {
@@ -118,7 +121,7 @@ class _loginPageState extends State<loginPage> {
               ),
               onTap: () {
                 setState(() {
-                  print("Criar conta");
+                  push(context, CadastroPage());
                 });
               },
             ),
@@ -154,9 +157,9 @@ class _loginPageState extends State<loginPage> {
     apiResponse response = await _bloc.login(login, senha);
 
     if (response.ok) {
-      Usuario usuario = response.result;
+      //Usuario usuario = response.result;
 
-      replace(context, homePage(usuario));
+      replace(context, homePage());
     } else {
       alert(context, response.msg.toString(), "error");
     }
@@ -191,7 +194,18 @@ class _loginPageState extends State<loginPage> {
     _bloc.dispose();
   }
 
-  void _onClickGoogleSign() {
+  void _onClickGoogleSign() async{
     print("google");
+
+    final service = FireBaseService();
+    apiResponse response = await service.loginGoogle();
+
+    if(response.ok){
+      push(context, homePage());
+    }else {
+      alert(context, response.msg, "");
+    }
+
+
   }
 }

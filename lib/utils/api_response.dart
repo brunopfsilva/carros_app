@@ -5,11 +5,11 @@ class apiResponse<T> {
   String msg;
   T result;
 
-  apiResponse.ok(this.result) {
+  apiResponse.ok({this.result,this.msg}) {
     ok = true;
   }
 
-  apiResponse.error(this.msg) {
+  apiResponse.error({this.result,this.msg}) {
     ok = false;
   }
 }

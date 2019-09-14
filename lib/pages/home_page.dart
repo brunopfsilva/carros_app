@@ -6,7 +6,7 @@ import 'package:carros_app/widgets/carrosPage.dart';
 class homePage extends StatefulWidget {
   Usuario user;
 
-  homePage(this.user);
+  homePage({this.user});
 
   @override
   _homePageState createState() => _homePageState();

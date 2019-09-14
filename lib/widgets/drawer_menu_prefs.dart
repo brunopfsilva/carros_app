@@ -1,24 +1,21 @@
 import 'package:carros_app/login/firebase_service.dart';
 import 'package:carros_app/settings.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../main.dart';
 
 class myDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    //Future<Usuario> user = Usuario.get(); usuario preferences
-    Future<FirebaseUser> user = FirebaseAuth.instance.currentUser();
+    Future<Usuario> user = Usuario.get();
 
     return SafeArea(
       child: Drawer(
         child: ListView(
           children: <Widget>[
-            FutureBuilder<FirebaseUser>(
+            FutureBuilder<Usuario>(
               future: user,
               builder: (context, snapshot) {
-                FirebaseUser user = snapshot.data;
+                Usuario user = snapshot.data;
 
                 return user != null
                     ? _hearder(user)
@@ -37,13 +34,13 @@ class myDrawer extends StatelessWidget {
     );
   }
 
-  UserAccountsDrawerHeader _hearder(FirebaseUser user) {
+  UserAccountsDrawerHeader _hearder(Usuario user) {
     return UserAccountsDrawerHeader(
-      accountName: Text(user.displayName),
+      accountName: Text(user.nome),
       accountEmail: Text(user.email),
-      currentAccountPicture: user.photoUrl != null ? CircleAvatar(
-        backgroundImage: NetworkImage(user.photoUrl),
-      ) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),),),
+      currentAccountPicture: CircleAvatar(
+        backgroundImage: NetworkImage(user.urlFoto),
+      ),
     );
   }
 }

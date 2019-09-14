@@ -23,12 +23,12 @@ class LoginApiUser {
 
       if (response.statusCode == 200) {
         usuario.save();
-        return apiResponse.ok(usuario);
+        return apiResponse.ok(result: usuario);
       } else {
-        return apiResponse.error(mapResponse["error"]);
+        return apiResponse.error(msg: mapResponse["error"]);
       }
     } catch (error, exception) {
-      return apiResponse.error("Error não foi possivel fazer o login$error");
+      return apiResponse.error(msg: "Error não foi possivel fazer o login$error");
     }
   }
 }

@@ -101,9 +101,9 @@ class CarrosApi {
 
         print("Novo Carro: ${carro.id}");
 
-        return apiResponse.ok(true);
+        return apiResponse.ok(result:  true);
       } else if (response.body == null || response.body.isEmpy) {
-        return apiResponse.error("nao foi possivel salvar");
+        return apiResponse.error(msg: "nao foi possivel salvar");
       }
     } catch (error) {
       print(error);
@@ -112,7 +112,7 @@ class CarrosApi {
     }
 
     mapResponse = json.decode(response.body);
-    return apiResponse.error(mapResponse["error"]);
+    return apiResponse.error(msg: mapResponse["error"]);
   }
 
   static delete(Carro c) async {
@@ -144,9 +144,9 @@ class CarrosApi {
         //funcao decode usada para pegar o map do objecto
         mapResponse = json.decode(response.body);
 
-        return apiResponse.ok(true);
+        return apiResponse.ok(result: true);
       } else if (response.body == null || response.body.isEmpy) {
-        return apiResponse.error("nao foi possivel deletar");
+        return apiResponse.error(msg: "nao foi possivel deletar");
       }
     } catch (error) {
       print(error);
@@ -155,6 +155,6 @@ class CarrosApi {
     }
 
     mapResponse = json.decode(response.body);
-    return apiResponse.error(mapResponse["error"]);
+    return apiResponse.error(msg: mapResponse["error"]);
   }
 }
