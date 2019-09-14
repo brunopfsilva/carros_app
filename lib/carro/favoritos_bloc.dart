@@ -35,9 +35,13 @@ class favoritosBloc {
       }
       
       //joga os dados na stream
-      _streamController.sink.add(carros);
+      if(_streamController != null) {
+        _streamController.sink.add(carros);
+        return carros;
+      }else {
+        return null;
+      }
 
-      return carros;
     } on Exception catch (e) {
       _streamController.sink.addError(e);
     }

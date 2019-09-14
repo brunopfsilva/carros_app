@@ -9,8 +9,13 @@ void main() => runApp(MyApp());
 //final bloc_global = favoritosBloc();
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.deepPurpleAccent,
           //primaryColorDark: Colors.deepPurpleAccent,
           //  primarySwatch: Colors.deepPurple,
-         // brightness: Brightness.light
+          brightness: Brightness.light
 
         ),
 
@@ -41,7 +46,5 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-
 }
 

@@ -98,16 +98,17 @@ class carroList extends StatelessWidget {
             title: Text("Detalhes"),
             leading: Icon(Icons.directions_car),
             onTap: (){
-              _clickCarro(context, c);
               Navigator.pop(context);
+              _clickCarro(context, c);
+
             },
           ),
           ListTile(
             title: Text("Share"),
             leading: Icon(Icons.share),
             onTap: (){
-              _onclickShare(context,  c);
               Navigator.pop(context);
+              _onclickShare(context,  c);
             },
             
           ),

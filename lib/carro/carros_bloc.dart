@@ -43,9 +43,11 @@ class carrosBloc {
       }
       
       //joga os dados na stream
-      _streamController.sink.add(carros);
-
-      return carros;
+      if(_streamController != null) {
+        _streamController.sink.add(carros);
+        return carros;
+      }
+      return null;
     } on Exception catch (e) {
       _streamController.sink.addError(e);
     }
