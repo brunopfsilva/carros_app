@@ -19,9 +19,14 @@ environment:
 dependencies:
   cached_network_image: ^1.1.1
   shared_preferences: ^0.5.3+4
+  #verifica se existe internet
   connectivity: ^0.4.4
+  share: any
+  #abri url dentro do app
+  url_launcher: any
   image_picker: ^0.6.1+4
   provider: ^3.1.0
+  google_maps_flutter: any
   flutter:
     sdk: flutter
 

@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros_app/carro/carro-form-page.dart';
 import 'package:carros_app/carro/lore_bloc.dart';
+import 'package:carros_app/carro/mapa_page.dart';
 import 'package:carros_app/favoritos/favorito_service.dart';
 import 'package:carros_app/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:carros_app/carro/Carro.dart';
 import 'package:carros_app/utils/nav.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarroPage extends StatefulWidget {
   Carro carro;
@@ -54,11 +56,11 @@ class _CarroPageState extends State<CarroPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.place),
-            onPressed: _onClickmap,
+            onPressed: _onClickmap(widget.carro),
           ),
           IconButton(
             icon: Icon(Icons.videocam),
-            onPressed: _onClickvideo,
+            onPressed: () => _onClickvideo(context),
           ),
           PopupMenuButton<String>(
             onSelected: (String value) => _onClickMenu(value),
@@ -154,9 +156,18 @@ class _CarroPageState extends State<CarroPage> {
         );
   }
 
-  void _onClickmap() {}
+   _onClickmap(Carro carro) {
+    push(context, MapPage(carro));
+  }
 
-  void _onClickvideo() {}
+  void _onClickvideo(context) async {
+    print(widget.carro.urlVideo);
+    if(widget.carro.urlVideo != null && widget.carro.urlVideo.isNotEmpty){
+      await launch(widget.carro.urlVideo);
+    }else {
+      alert(context, "Esse carro nao possui video", "Erro");
+    }
+  }
 
   _onClickMenu(String value) {
     switch (value) {

@@ -5,6 +5,7 @@ import 'package:carros_app/carro/carros_bloc.dart';
 import 'package:carros_app/settings.dart';
 import 'package:carros_app/utils/test_error.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:share/share.dart';
 
 class carroList extends StatelessWidget {
   List<Carro> carros;
@@ -20,6 +21,7 @@ class carroList extends StatelessWidget {
           itemBuilder: (context, index) {
             Carro c = carros[index];
 
+
             return Card(
               child: Padding(
                 padding: const EdgeInsets.all(9.0),
@@ -27,13 +29,16 @@ class carroList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Center(
-                      child: CachedNetworkImage(
-                        imageUrl: c.urlFoto ??
-                        "https://carros-springboot.herokuapp.com/api/v1/carros/tipo/esportivos/Ferrari_FF.png",
-                        placeholder: (context, url) =>
-                            new CircularProgressIndicator(),
-                        errorWidget: (context, url, error) =>
-                            new Icon(Icons.error),
+                      child: InkWell(
+                        child: CachedNetworkImage(
+                          imageUrl: c.urlFoto ??
+                          "https://carros-springboot.herokuapp.com/api/v1/carros/tipo/esportivos/Ferrari_FF.png",
+                          placeholder: (context, url) =>
+                              new CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              new Icon(Icons.error),
+                        ),
+
                       ),
                     ),
                     /*Center(child: Image.network(c.urlFoto ??
@@ -59,9 +64,7 @@ class carroList extends StatelessWidget {
                           ),
                           FlatButton(
                             child: const Text('Compartilhar'),
-                            onPressed: () {
-                              /* ... */
-                            },
+                            onPressed: () => _onclickShare(context,c),
                           ),
                         ],
                       ),
@@ -76,11 +79,52 @@ class carroList extends StatelessWidget {
           leading: Image.network(c.urlFoto,scale: 1.0,),
 
         );*/
-          }),
+          },),
     );
   }
 
   _clickCarro(context, Carro c) {
     push(context, CarroPage(c));
   }
+
+
+  _longclickCarro(BuildContext context, Carro c) {
+
+    showDialog(context: context,builder: (context){
+      return SimpleDialog(
+        title: Text(c.nome),
+        children: <Widget>[
+          ListTile(
+            title: Text("Detalhes"),
+            leading: Icon(Icons.directions_car),
+            onTap: (){
+              _clickCarro(context, c);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text("Share"),
+            leading: Icon(Icons.share),
+            onTap: (){
+              _onclickShare(context,  c);
+              Navigator.pop(context);
+            },
+            
+          ),
+
+        ],
+      );
+    });
+
+
+
+  }
+
+  void _onclickShare(BuildContext context, Carro c) {
+    print(c.nome);
+
+    Share.share(c.urlFoto);
+  }
+
+
 }

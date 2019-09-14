@@ -1,5 +1,7 @@
 import 'dart:convert' as covert;
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class Carro {
   int id;
@@ -20,6 +22,11 @@ class Carro {
         this.urlVideo,
         this.latitude,
         this.longitude});
+
+  get latlng => LatLng(
+      latitude == null || latitude.isEmpty ? 0.0 : double.parse(latitude),
+      longitude == null || longitude.isEmpty ? 0.0 : double.parse(longitude)
+  );
 
   //faz o parse do objecto para o json ou seja usando para leitura de dados
   Carro.fromJson(Map<String, dynamic> json) {
