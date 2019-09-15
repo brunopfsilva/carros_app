@@ -1,4 +1,5 @@
 import 'package:carros_app/firebase/firebase_service.dart';
+import 'package:carros_app/pages/site_page.dart';
 import 'package:carros_app/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,6 +27,12 @@ class myDrawer extends StatelessWidget {
               },
             ),
             ListTile(
+              title: Text("Site"),
+              subtitle: Text("Visite nosso site"),
+              leading: Icon(Icons.web),
+              onTap: () => _onClickOpenSite(context),
+            ),
+            ListTile(
               title: Text("Logout"),
               subtitle: Text("Sair do app"),
               leading: Icon(Icons.exit_to_app),
@@ -46,6 +53,13 @@ class myDrawer extends StatelessWidget {
       ) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),),),
     );
   }
+
+}
+
+
+_onClickOpenSite(context) {
+  Navigator.pop(context);
+  push(context, sitePage());
 }
 
 _onClickLogout(context) {

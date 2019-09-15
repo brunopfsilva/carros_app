@@ -35,6 +35,8 @@ dependencies:
   cloud_firestore: any
   firebase_messaging: any
   firebase_storage: any
+  #webview
+  webview_flutter: any
 
   flutter:
     sdk: flutter
