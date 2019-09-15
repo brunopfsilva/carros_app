@@ -1,3 +1,5 @@
+import 'package:carros_app/login/firebase_service.dart';
+import 'package:carros_app/pages/home_page.dart';
 import 'package:carros_app/pages/login_page.dart';
 import 'package:carros_app/utils/nav.dart';
 import 'package:carros_app/settings.dart';
@@ -181,15 +183,49 @@ class _CadastroPageState extends State<CadastroPage> {
     replace(context,loginPage());
   }
 
-  _onClickCadastrar(context) {
+  _onClickCadastrar(context) async {
     print("Cadastrar!");
 
-    String nome = _tNome.text;
-    String email = _tEmail.text;
-    String senha = _tSenha.text;
+    //se form nao valido nao retorna nada
+    try {
+      if(! _formKey.currentState.validate()){
+        return;
+      }
 
-    print("Nome $nome, Email $email, Senha $senha");
+      String nome = _tNome.text;
+      String email = _tEmail.text;
+      String senha = _tSenha.text;
+
+      print("Nome $nome, Email $email, Senha $senha");
+
+      setState(() {
+        _progress = true;
+      });
+
+      print("google");
+
+      final service = FireBaseService();
+      final apiResponse response = await service.CadastoFirebaseGoogle(nome, email, senha);
+
+      if(response.ok ){
+        replace(context, homePage());
+        setState(() {
+          _progress = false;
+        });
+      }else if(response.ok == null){
+        alert(context, response.msg, "");
+        setState(() {
+          _progress = false;
+        });
+        Navigator.pop(context);
+      }
+      setState(() {
+        _progress = false;
+      });
+    } on Exception catch (e) {
+      alert(context, response.msg, e.toString());    }
+
   }
 
+  }
 
-}

@@ -1,10 +1,11 @@
 import 'package:carros_app/settings.dart';
+import 'package:carros_app/utils/Common.dart';
 import 'package:http/http.dart' as http;
 
 class LoginApiUser {
   static Future<apiResponse<Usuario>> login(String login, String senha) async {
     try {
-      var url = 'https://carros-springboot.herokuapp.com/api/v2/login';
+      var url = Common.ServerUrlv1;
 
       Map<String, String> hearders = {"Content-Type": "application/json"};
 

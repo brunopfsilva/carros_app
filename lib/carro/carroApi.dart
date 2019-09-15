@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:carros_app/carro/carro-dao.dart';
 import 'package:carros_app/settings.dart';
+import 'package:carros_app/utils/Common.dart';
 import 'package:carros_app/utils/upload_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -25,12 +26,12 @@ class CarrosApi {
     };
 
     try {
-      var url =
-          'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo';
+      var url = Common.ServerUrlv1Tipo+tipo;
 
       print("GET > $url");
 
-      var response = await http.get(url, headers: hearder);
+      var response = await http.get(url);
+      //var response = await http.get(url, headers: hearder);
 
       //quando o json vem entre [] converter sempre para lista
       List list = json.decode(response.body);
@@ -67,9 +68,9 @@ class CarrosApi {
     };
 
     try {
-      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros';
+      var url = Common.carrosGeturlv1;
       if (c.id != null) {
-        url = "/${c.id}";
+        url = "${c.id}";
       }
       print("POST > $url");
 
@@ -125,14 +126,14 @@ class CarrosApi {
 
     try {
       var url =
-          'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/carro/${c.id}';
+          'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/carro/${c.id}';
 
       print("delete > $url");
 
       //funcao encode usada para convert para json
 
       // se  o id == null chama o post se nao chama o put
-      response = await http.delete(url, headers: hearder);
+      response = await http.delete(url);
 
       print("status code: " + response.statusCode);
 

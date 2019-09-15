@@ -14,14 +14,18 @@ class loginBlocFire {
 
   Future<apiResponse> login(String login, String senha) async {
 
-    _streamController.sink.add(true);
+    try {
+      _streamController.sink.add(true);
 
-   // apiResponse response = await LoginApiUser.login(login, senha);
-     apiResponse response = await FireBaseService().loginGooglewithUserPass(login, senha);
+         // apiResponse response = await LoginApiUser.login(login, senha);
+       apiResponse response = await FireBaseService().loginGooglewithUserPass(login, senha);
 
-    _streamController.sink.add(false);
+      _streamController.sink.add(false);
 
-    return response;
+      return response;
+    } on Exception catch (e) {
+      // TODO
+    }throw(Exception);
   }
 
   dispose() {

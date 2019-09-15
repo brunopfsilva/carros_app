@@ -154,13 +154,20 @@ class _loginPageState extends State<loginPage> {
 
 */
 
-    apiResponse response = await _bloc.login(login, senha);
+    try {
+      apiResponse response = await _bloc.login(login, senha);
 
-    if (response.ok) {
-      //Usuario usuario = response.result;
+      if (response.ok == true) {
+        //Usuario usuario = response.result;
 
-      replace(context, homePage());
-    } else {
+        replace(context, homePage());
+      } else if (response.ok == false){
+        setState(() {
+          alert(context, response.msg.toString(), "error");
+        });
+
+      }
+    } on Exception catch (e) {
       alert(context, response.msg.toString(), "error");
     }
 
@@ -181,7 +188,7 @@ class _loginPageState extends State<loginPage> {
     if (text.isEmpty) {
       return "Por favor preencha o campo senha";
     }
-    if (text.length > 3) {
+    if (text.length < 3) {
       return "A senha nao pode ser menor que 3 caracters";
     } else {
       return null;
@@ -198,7 +205,7 @@ class _loginPageState extends State<loginPage> {
     print("google");
 
     final service = FireBaseService();
-    apiResponse response = await service.loginGoogle();
+    final apiResponse response = await service.loginGoogle();
 
     if(response.ok){
       push(context, homePage());
