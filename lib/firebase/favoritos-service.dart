@@ -58,4 +58,6 @@ class FavoritosService {
     // Verifica se o carro está favoritado
     return await documentSnapshot.exists;
   }
+
+
 }

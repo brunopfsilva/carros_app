@@ -9,6 +9,7 @@ import 'package:carros_app/settings.dart';
 import 'package:carros_app/login/Usuario.dart';
 import 'package:carros_app/pages/home_page.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -16,8 +17,8 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
-  final tlogin = TextEditingController();
 
+  final tlogin = TextEditingController();
   final tsenha = TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
@@ -27,6 +28,10 @@ class _loginPageState extends State<loginPage> {
   bool _showProgress = false;
 
   final _bloc = loginBlocFire();
+
+  //pega o token do dispositivo
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
 
   @override
   void initState() {
@@ -39,13 +44,27 @@ class _loginPageState extends State<loginPage> {
       if (user != null) {
         replace(context, homePage(user: user,));
       }
-
-      /*  setState(() {
-        tlogin.text = user.login;
-      });
-
-*/
     });
+    _initFcm();
+  }
+
+  void _initFcm(){
+
+    _firebaseMessaging.getToken().then((token){
+      print("Firebase Token ${token}");
+    });
+    _firebaseMessaging.configure(
+      onMessage: (Map<String,dynamic> message) async {
+        print("on message $message");
+      },
+      onResume: (Map<String,dynamic> message) async {
+        print("on resume $message");
+      },
+      onLaunch: (Map<String,dynamic> message) async {
+        print("on launch $message");
+      },
+    );
+
   }
 
   @override

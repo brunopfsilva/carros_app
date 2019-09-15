@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:carros_app/firebase/firebase_service.dart';
 import 'package:carros_app/pages/home_page.dart';
 import 'package:carros_app/pages/login_page.dart';
 import 'package:carros_app/utils/nav.dart';
 import 'package:carros_app/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CadastroPage extends StatefulWidget {
   @override
@@ -11,9 +14,13 @@ class CadastroPage extends StatefulWidget {
 }
 
 class _CadastroPageState extends State<CadastroPage> {
+
   final _tNome = TextEditingController();
   final _tEmail = TextEditingController();
   final _tSenha = TextEditingController();
+
+  File _file;
+
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -44,70 +51,14 @@ class _CadastroPageState extends State<CadastroPage> {
       key: _formKey,
       child: ListView(
         children: <Widget>[
-          TextFormField(
-            controller: _tNome,
-            validator: _validateNome,
-            keyboardType: TextInputType.text,
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 22,
-            ),
-            decoration: InputDecoration(
-              labelText: "Nome",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-              ),
-              hintText: "Digite o seu nome",
-              hintStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          TextFormField(
-            controller: _tEmail,
-            validator: _validateLogin,
-            keyboardType: TextInputType.text,
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 22,
-            ),
-            decoration: InputDecoration(
-              labelText: "Email",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-              ),
-              hintText: "Digite o seu email",
-              hintStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          TextFormField(
-            controller: _tSenha,
-            validator: _validateSenha,
-            obscureText: true,
-            keyboardType: TextInputType.number,
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 22,
-            ),
-            decoration: InputDecoration(
-              labelText: "Senha",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-              ),
-              hintText: "Digite a sua Senha",
-              hintStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              ),
-            ),
-          ),
+          SizedBox(height: 18,),
+          
+          IconButton(icon: Icon(Icons.photo_camera),onPressed: _onClickFoto,color: Colors.deepPurpleAccent,iconSize: 99,),
+          Divider(height: 18,),
+          
+          textFormField_carro_page("nome","Digite o seu nome"),
+          textFormField_carro_page("Email","Digite o seu email"),
+          textFormField_carro_page("Senha","Digite a sua senha",obscureText: true),
           Container(
             height: 46,
             margin: EdgeInsets.only(top: 20),
@@ -150,6 +101,33 @@ class _CadastroPageState extends State<CadastroPage> {
         ],
       ),
     );
+  }
+
+  TextFormField textFormField_carro_page(String nome,String hint,{bool obscureText = false }) {
+
+
+    return TextFormField(
+          controller: _tNome,
+          validator: _validateNome,
+          keyboardType: TextInputType.text,
+          style: TextStyle(
+            color: Colors.blue,
+            fontSize: 22,
+          ),
+          decoration: InputDecoration(
+            labelText: nome,
+            labelStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 22,
+            ),
+            hintText: hint,
+            hintStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+            ),
+          ),
+          obscureText: false,
+        );
   }
 
   String _validateNome(String text) {
@@ -204,8 +182,9 @@ class _CadastroPageState extends State<CadastroPage> {
 
       print("google");
 
+
       final service = FireBaseService();
-      final apiResponse response = await service.CadastoFirebaseGoogle(nome, email, senha);
+      final apiResponse response = await service.CadastoFirebaseGoogle(nome, email, senha,file: _file);
 
       if(response.ok ){
         replace(context, homePage());
@@ -223,8 +202,24 @@ class _CadastroPageState extends State<CadastroPage> {
         _progress = false;
       });
     } on Exception catch (e) {
-      alert(context, response.msg, e.toString());    }
+      alert(context, response.msg, e.toString());
+      Navigator.pop(context);
 
+    }throw(Exception){
+      Navigator.pop(context);
+    };
+
+  }
+
+  void _onClickFoto() async {
+    File file = await ImagePicker.pickImage(source: ImageSource.camera);
+    print(file);
+    if (file != null) {
+
+      setState(() {
+        this._file = file; //
+      });
+    }
   }
 
   }

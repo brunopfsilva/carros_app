@@ -33,6 +33,8 @@ dependencies:
   firebase_auth: any
   google_sign_in: any
   cloud_firestore: any
+  firebase_messaging: any
+  firebase_storage: any
 
   flutter:
     sdk: flutter

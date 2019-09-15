@@ -1,10 +1,14 @@
 
 
+import 'dart:io';
+
 import 'package:carros_app/settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
+import 'package:path/path.dart' as path;
 
 String firebaseUserUid;
 
@@ -15,7 +19,7 @@ class FireBaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
-  Future<apiResponse> CadastoFirebaseGoogle(String nome,String email, String password) async {
+  Future<apiResponse> CadastoFirebaseGoogle(String nome,String email, String password,{File file}) async {
 
 
 
@@ -32,9 +36,15 @@ class FireBaseService {
       final userUpdateInfo = UserUpdateInfo();
       userUpdateInfo.displayName = nome;
       userUpdateInfo.photoUrl = "https://s3-sa-east-1.amazonaws.com/livetouch-temp/livros/foto.png";
+
+       if(file != null){
+
+         userUpdateInfo.photoUrl = await FireBaseService.uploadFirebaseStorage(file);
+       }
+
        firebaseUser.updateProfile(userUpdateInfo);
 
-      //cria usuario no app
+       //cria usuario no app
       final user = Usuario(
         nome: firebaseUser.displayName,
         email: firebaseUser.email,
@@ -160,6 +170,18 @@ class FireBaseService {
   Future<void> logout() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
+  }
+
+  static Future<String>uploadFirebaseStorage(File file) async {
+
+    print("Uplad to Storage $file");
+    String fileName = path.basename(file.path);
+    final storageRef = FirebaseStorage.instance.ref().child(fileName);
+
+    final StorageTaskSnapshot task = await storageRef.putFile(file).onComplete;
+    final String urlFoto = await task.ref.getDownloadURL();
+    print("Storage > $urlFoto");
+    return urlFoto;
   }
 
 }
