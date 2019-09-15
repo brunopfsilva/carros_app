@@ -1,9 +1,12 @@
 
 
 import 'package:carros_app/settings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
+
+String firebaseUserUid;
 
 class FireBaseService {
 
@@ -38,6 +41,9 @@ class FireBaseService {
         urlFoto: firebaseUser.photoUrl,
       );
 
+      //salva usuario no firebase
+      saveUserFirebase();
+      //salva nas preferencias
       user.save();
 
       return apiResponse.ok(result: true,msg: "Usuario cadastrado com sucesso");
@@ -75,7 +81,9 @@ class FireBaseService {
         email: firebaseUser.email,
         urlFoto: firebaseUser.photoUrl,
       );
-
+      //salva usuario no firebase
+      saveUserFirebase();
+      //salva usuario nas preferencias
       user.save();
 
       return apiResponse.ok(result: result);
@@ -87,6 +95,17 @@ class FireBaseService {
 
 
 
+  }
+  
+  static void saveUserFirebase() async {
+    //pega usuario automaticamente logado
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if(user != null){
+      firebaseUserUid = user.uid;
+      DocumentReference refUser = Firestore.instance.collection("users")
+      .document(firebaseUserUid);
+      refUser.setData({"nome":user.displayName,"email":user.email});
+    }
   }
 
 
@@ -121,7 +140,11 @@ class FireBaseService {
           urlFoto: firebaseUser.photoUrl,
       );
 
+      //salva usuario no firebase
+      saveUserFirebase();
+      //salva usuario nas preferencias
       user.save();
+
 
       return apiResponse.ok(result: result);
 

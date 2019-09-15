@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 class FavoritoService {
   static Future<bool> Favoritar(context, Carro carro) async {
+
     Favoritos f = Favoritos();
     f.id = carro.id;
     f.nome = carro.nome;

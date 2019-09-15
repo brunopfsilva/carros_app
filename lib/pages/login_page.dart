@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:carros_app/login/firebase_service.dart';
+import 'package:carros_app/firebase/firebase_service.dart';
 import 'package:carros_app/login/login_bloc.dart';
-import 'package:carros_app/login/login_bloc_firebase.dart';
+import 'package:carros_app/firebase/login_bloc_firebase.dart';
 import 'package:carros_app/pages/cadastro-page.dart';
 import 'package:carros_app/settings.dart';
 

@@ -32,6 +32,7 @@ dependencies:
   flutter_auth_buttons: any
   firebase_auth: any
   google_sign_in: any
+  cloud_firestore: any
 
   flutter:
     sdk: flutter

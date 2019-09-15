@@ -6,6 +6,8 @@ import 'package:carros_app/carro/carros_bloc.dart';
 import 'package:carros_app/widgets/carrosList.dart';
 import 'package:carros_app/main.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:carros_app/firebase/favoritos-service.dart';
 
 class FavoritosPage extends StatefulWidget {
   @override
@@ -35,10 +37,17 @@ class _FavoritosPageState extends State<FavoritosPage>
 
   @override
   Widget build(BuildContext context) {
-    favoritosBloc fbloc = Provider.of<favoritosBloc>(context);
 
-    return StreamBuilder(
-        stream: fbloc.stream,
+    favoritosBloc fbloc = Provider.of<favoritosBloc>(context);
+    List<Carro> carros;
+
+    //Firestore.instance.collection("carros").getDocuments();
+
+    FavoritosService service = new FavoritosService();
+
+    return StreamBuilder<QuerySnapshot>(
+        //acesso a colection de carros salva no firestore deixando em esculta
+        stream: service.getCarros(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return TextError("Nao foi possivel buscar os carros");
@@ -52,7 +61,12 @@ class _FavoritosPageState extends State<FavoritosPage>
             );
           }
 
-          List<Carro> carros = snapshot.data;
+          //List<Carro> carros = snapshot.data;
+
+          if(snapshot.hasData){
+            //tratado os dados convertendo eles um objecto(carro) percorrendo a lista um a um
+            carros = service.toList(snapshot);
+          }
 
           return RefreshIndicator(
             onRefresh: _onRefresh,

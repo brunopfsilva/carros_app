@@ -1,17 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros_app/carro/carro-dao.dart';
 import 'package:carros_app/carro/lore_bloc.dart';
 import 'package:carros_app/carro/loripsum_api.dart';
-import 'package:carros_app/carro/mapa_page.dart';
+import 'package:carros_app/pages/mapa_page.dart';
 import 'package:carros_app/favoritos/favorito_service.dart';
+import 'package:carros_app/firebase/favoritos-service.dart';
 import 'package:carros_app/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:carros_app/carro/Carro.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CarroPage extends StatefulWidget {
   Carro carro;
 
   CarroPage(this.carro);
+
+  bool _isFavorito = false;
 
   @override
   _CarroPageState createState() => _CarroPageState();
@@ -23,7 +28,21 @@ class _CarroPageState extends State<CarroPage> {
   @override
   void initState() {
     super.initState();
+    final service = FavoritosService();
     _loren.lorem();
+
+    service.exists(widget.carro).then((b){
+
+      //metodo retorna um future tipado com bool, onde o mesmo vai precisar ser utilizado para
+      //true or false na variavel _isFavorito atribuindo valor a ela;
+      if(b){
+        setState(() {
+          widget._isFavorito = b;
+        });
+      }
+    });
+
+
   }
 
   @override
@@ -118,13 +137,15 @@ class _CarroPageState extends State<CarroPage> {
         Spacer(),
         Row(
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.favorite,
-                color: Colors.redAccent,
-                size: 33,
+            InkWell(
+              child: IconButton(
+                icon: Icon(
+                  Icons.favorite,
+                  color: widget._isFavorito != null ? Colors.redAccent : Colors.grey,
+                  size: 33,
+                ),
+                onPressed: () => _onClickFavorito(widget.carro),
               ),
-              onPressed: _onClickFavorito,
             ),
             IconButton(
               icon: Icon(
@@ -132,7 +153,7 @@ class _CarroPageState extends State<CarroPage> {
                 color: Colors.blueGrey,
                 size: 33,
               ),
-              onPressed: _onClickFavorito,
+              onPressed: () => _onclickShare(widget.carro),
             ),
           ],
         ),
@@ -168,9 +189,20 @@ class _CarroPageState extends State<CarroPage> {
     }
   }
 
-  void _onClickFavorito() {
+  void _onClickFavorito(Carro carro) async {
     //este service uni a classe carro com a classe favorito
-    FavoritoService.Favoritar(context, widget.carro);
+    //logica favoritos db
+    //FavoritoService.Favoritar(context, widget.carro);
+
+    //logica favoritos firebase
+    final service = FavoritosService();
+    final exists = await service.favoritar(carro);
+
+    setState(() {
+      widget._isFavorito = exists;
+      Navigator.pop(context);
+    });
+
   }
 
   bloco2() {
@@ -198,5 +230,11 @@ class _CarroPageState extends State<CarroPage> {
             }),
       ],
     );
+  }
+
+  void _onclickShare(Carro carro) {
+
+    Share.share(carro.urlFoto);
+
   }
 }

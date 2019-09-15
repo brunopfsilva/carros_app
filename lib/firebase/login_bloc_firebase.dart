@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:carros_app/login/firebase_service.dart';
+import 'package:carros_app/firebase/firebase_service.dart';
 import 'package:carros_app/login/login_api_user.dart';
 import 'package:carros_app/utils/api_response.dart';
 
-import 'Usuario.dart';
-import 'login_api.dart';
+import '../login/Usuario.dart';
+import '../login/login_api.dart';
 
 class loginBlocFire {
   final _streamController = StreamController<bool>();
