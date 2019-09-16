@@ -22,12 +22,7 @@ class FireBaseService {
   Future<apiResponse> CadastoFirebaseGoogle(String nome,String email, String password,{File file}) async {
 
 
-
-
     try {
-
-
-
 
        AuthResult result = await _auth.createUserWithEmailAndPassword(email: email,password: password);
        //auth firebase

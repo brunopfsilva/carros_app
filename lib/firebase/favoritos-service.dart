@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/src/widgets/async.dart';
 
 class FavoritosService {
+
   getCarros() => _carros.snapshots();
 
   //pega a colecao de carros
@@ -14,9 +15,10 @@ class FavoritosService {
     //seta variavel uid pegando a global
     String uid = firebaseUserUid;
     //recupera a colection usuario logado
+    //cria um document para o usuario que esta logado
     DocumentReference refUser = Firestore.instance.collection("users")
     .document(uid);
-    //retorna a uniao ja concatenada com carros(a collection de usuarios)
+    //depois neste documente é criado que fica dentro do usuario logado
     return refUser.collection("carros");
   }
 
