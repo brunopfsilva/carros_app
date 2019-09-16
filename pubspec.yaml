@@ -37,6 +37,8 @@ dependencies:
   firebase_storage: any
   #webview
   webview_flutter: any
+  #biometry
+  local_auth: any
 
   flutter:
     sdk: flutter

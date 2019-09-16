@@ -8,6 +8,8 @@ import 'package:carros_app/settings.dart';
 
 import 'package:carros_app/login/Usuario.dart';
 import 'package:carros_app/pages/home_page.dart';
+import 'package:carros_app/utils/fingerprint.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -31,23 +33,41 @@ class _loginPageState extends State<loginPage> {
 
   //pega o token do dispositivo
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
+  FirebaseUser fuser;
 
   @override
   void initState() {
     super.initState();
 
+    //pega usuario das preferencias
     Future<Usuario> future = Usuario.get();
     //este future aguarda o objecto Usuario como resultado
     future.then((Usuario user) {
       //mantem o usuario logado
       if (user != null) {
-        replace(context, homePage(user: user,));
+        //replace(context, homePage(user: user,));
       }
     });
+
+    //pega usuario do firebase
+    FirebaseAuth.instance.currentUser().then((fuser){
+      setState(() {
+
+        this.fuser = fuser;
+        if(fuser != null){
+          //replace(context, homePage(user: user,));
+        } else {
+
+        }
+
+      });
+    });
+
+
     _initFcm();
   }
 
+  //google notification
   void _initFcm(){
 
     _firebaseMessaging.getToken().then((token){
@@ -144,6 +164,16 @@ class _loginPageState extends State<loginPage> {
                 });
               },
             ),
+            Opacity(
+              opacity: fuser  != null ? 1 : 0,
+              child: Container(
+                height: 45,
+                child: InkWell(
+                  onTap: () => _onClickFingerPrint(context),
+                  child: Icon(Icons.fingerprint,size: 45,color: Colors.deepPurple,),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -151,6 +181,7 @@ class _loginPageState extends State<loginPage> {
   }
 
   _onClickLogin() async {
+
     bool formOk = _formkey.currentState.validate();
 
     //se o formulario nao for valido nao deixa segui em frente
@@ -232,6 +263,16 @@ class _loginPageState extends State<loginPage> {
       alert(context, response.msg, "");
     }
 
+
+  }
+
+  _onClickFingerPrint(context) async {
+
+    final ok = await FingerPrint.verify();
+
+    if(ok){
+      replace(context,homePage());
+    }
 
   }
 }
